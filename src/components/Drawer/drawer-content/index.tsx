@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { NavLink, Link as ReactLink } from "react-router-dom";
 import Social from "./social";
 import ZootopiaIcon from "../../../assets/icons/logo.png";
+import TigerImg from "../../../assets/icons/tiger.png";
 import { trim, shorten } from "../../../helpers";
 import { useAddress } from "../../../hooks";
 import { Link } from "@material-ui/core";
@@ -32,13 +33,19 @@ function NavContent() {
     return (
         <div className="dapp-sidebar">
             <div className="branding-header">
-                <Link to="/" component={NavLink}>
+                {/* <Link to="/" component={NavLink}>
                     <img width="150" alt="" src={ZootopiaIcon} />
-                </Link>
+                </Link> */}
 
                 <div className="nav-title">
                     {/* <img width="200" alt="" src={TextLogoIcon} /> */}
-                    <p>City Of Mars</p>
+                    <p>
+                        C.T&nbsp;
+                        <Link to="/" component={NavLink}>
+                            <img src={TigerImg} />
+                        </Link>
+                        N.C
+                    </p>
                 </div>
 
                 {address && (

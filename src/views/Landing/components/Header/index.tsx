@@ -8,6 +8,7 @@ import { ReactComponent as GitHub } from "../../../../assets/icons/github.svg";
 import { ReactComponent as Twitter } from "../../../../assets/icons/twitter.svg";
 import { ReactComponent as Telegram } from "../../../../assets/icons/telegram.svg";
 import { ReactComponent as Discord } from "../../../../assets/icons/discord.svg";
+import TigerImg from "../../../../assets/icons/tiger.png";
 
 function Header() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -22,7 +23,11 @@ function Header() {
         <div className="landing-header">
             {/* <SvgIcon color="primary" component={ApeUIcon} viewBox="0 0 174 40" style={{ minWidth: 174, minHeight: 40 }} /> */}
             <ReactLink to="/">
-                <img width="50" alt="" src={ZootopiaIcon} />
+                <p className="landing-header-logo">
+                    C.T&nbsp;
+                    <img width="50" alt="" src={TigerImg} />
+                    N.C
+                </p>
             </ReactLink>
             {/* <div className="landing-header-nav-wrap">
                 <NavLink className="linke_style" to="tos">

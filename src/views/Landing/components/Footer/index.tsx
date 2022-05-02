@@ -20,7 +20,7 @@ function Footer() {
     const open = Boolean(anchorEl);
 
     return (
-        <footer>
+        <div className="footer">
             <Grid container spacing={4}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                     <NavLink className="footer-link-logo" to="/">
@@ -63,7 +63,7 @@ function Footer() {
                     </Grid>
                 </Grid>
             </Grid>
-        </footer>
+        </div>
     );
 }
 
