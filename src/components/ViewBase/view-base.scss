@@ -1,0 +1,46 @@
+.view-base-root {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    // background: #001a0f;
+    // background-color: rgb(1, 50, 31);
+    // background-image: url('');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .cubes-top {
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+
+        p {
+            font-family: Courier;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            color: #FFFFFF;
+            white-space: pre-wrap;
+            user-select: none;
+        }
+    }
+
+
+    .cubes-bottom {
+        opacity: 1;
+        position: absolute;
+        bottom: 0px;
+        right: 50px;
+
+        p {
+            font-family: Courier;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            color: #FFFFFF;
+            white-space: pre-wrap;
+            user-select: none;
+        }
+    }
+}

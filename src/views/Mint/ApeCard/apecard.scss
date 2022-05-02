@@ -1,0 +1,78 @@
+.ape-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    position: relative;
+    z-index: 2;
+    
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(100px);
+    }
+  
+    /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      background: #181B1C;
+    }
+
+    border-radius: 10px;
+    padding: 26px 0;
+
+    .card-title {
+      font-family: Montserrat Medium;
+      font-weight: 500;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+    }
+
+    .card-link {
+      font-family: Montserrat Medium;
+      font-weight: 500;
+      font-size: 16px;
+      margin-top: 30px;
+      color: rgb(83, 255, 60);
+      text-align: center;
+    }
+
+    .card-tier {
+        font-family: Montserrat Medium;
+        font-weight: 500;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 1);
+      }
+    
+    .card-name {
+        font-family: Montserrat Medium;
+        font-weight: 500;
+        font-size: 24px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        text-align: left;
+      }
+
+    .dapp-topbar-btns-wrap{
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        // width: 100%;
+      }
+    
+    .dapp-topbar-btns-wrap-full{
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        width: 100%;
+        justify-content: center;
+      }
+
+    .card-value {
+      font-family: Montserrat Bold;
+    //   font-weight: bold;
+      font-size: 20px;
+      color: #FFFFFF;
+      padding-bottom: 20px !important; 
+    }
+  }

@@ -1,0 +1,71 @@
+.policy-root {
+  background-color: #130401;
+  .policy-view{
+    // height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10%;
+    .policy-main{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      // align-items: center;
+      // justify-content: center;
+      // z-index: 2;
+      position: relative;
+      .policy-main-title-wrap{
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+
+        p{
+            font-family: Montserrat Medium;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 35px;
+            color: #FFFFFF;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+      }
+      .policy-main-subtitle-wrap{
+        margin: 5px 10px;
+
+        p{
+            font-family: system-ui;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 27px;
+            color: #FFFFFF;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+      }
+      .policy-main-help-text-wrap{
+        margin: 5px 0;
+
+        p{
+            font-family: system-ui;
+            font-style: normal;
+            font-weight: 200;
+            line-height: 1.5;
+            font-size: 16px;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            a{
+              color: #FFFFFF;
+              // text-decoration: none;
+            }
+        }
+        ul{
+            margin-top: 0px;
+            font-family: system-ui;
+            font-style: normal;
+            font-weight: 200;
+            line-height: 1.5;
+            font-size: 16px;
+            color: #FFFFFF;
+        }
+      }
+    }
+  }
+}

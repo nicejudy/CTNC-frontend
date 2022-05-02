@@ -1,0 +1,19 @@
+.swap-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+
+  iframe {
+    width: 89%;
+    margin: auto;
+    border: 0;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
+    border: 10px solid rgba(19, 4, 1, 0.5);
+    // max-width: 600px;
+    min-width: 300px;
+  }
+}

@@ -1,0 +1,35 @@
+.planet-button{
+    background: rgba(21, 255, 0, 0.2);
+    box-shadow: 0px 0px 10px rgba(44, 39, 109, 0.1);
+    border-radius: 10px;
+    padding: 9px 20px;
+    cursor: pointer;
+    margin: 20px 20px 0px 0px;
+
+    display: flex;
+    align-items: center;
+
+    .planet-button-progress{
+      margin-left: 10px;
+      margin-top: 4px;
+    }
+  
+    p{
+      font-family: Montserrat SemiBold;
+      font-weight: 600;
+      font-size: 18px;
+      color: #FFFFFF;
+    }
+  }
+
+.disabled {
+  pointer-events: none;
+  background: rgba(255, 150, 255, 0.2);
+  // width: 100%;
+}
+
+.card-disabled {
+  margin-left: 20px !important;
+  width: 60%;
+  justify-content: center;
+}
