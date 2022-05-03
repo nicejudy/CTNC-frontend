@@ -23,6 +23,7 @@ function ApeuButton() {
     };
 
     const addToken = () => async () => {
+        const host = window.location.origin;
         if (window.ethereum) {
             try {
                 await window.ethereum.request({
@@ -33,7 +34,7 @@ function ApeuButton() {
                             address: "0xee7244231DF6A0D8c4D9b54886ebdA92b6580dA9",
                             symbol: "WOOD",
                             decimals: TOKEN_DECIMALS,
-                            image: WoodIcon,
+                            image: `${host}/${WoodIcon}`,
                         },
                     },
                 });
@@ -54,7 +55,7 @@ function ApeuButton() {
                     <div className="time-menu-root" onClick={buyToken}>
                         <div className="time-menu-btn">{!isVerySmallScreen ? <p>Buy Wood</p> : <img alt="" width="20" src={CartIcon} />}</div>
                     </div>
-                    <div className="time-menu-root" onClick={addToken}>
+                    <div className="time-menu-root" onClick={addToken()}>
                         <div className="wood-btn">
                             <img alt="" height="24" src={WoodIcon} />
                         </div>
