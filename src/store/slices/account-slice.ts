@@ -50,19 +50,13 @@ interface ILoadAccountDetails {
 
 export interface IPlanetInfoDetails {
     id: number;
-    name: string;
-    metadata: any;
     creationTime: number;
     lastProcessingTimestamp: number;
-    rewardMult: number;
     planetValue: number;
     totalClaimed: number;
     exists: boolean;
     pendingReward: number;
     rewardPerDay: number;
-    compoundDelay: number;
-    pendingRewardsGross: number;
-    rewardPerDayGross: number;
 }
 
 export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails) => {
@@ -75,7 +69,6 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
 
     const apeuContract = new ethers.Contract(addresses.APEU_ADDRESS, ApeuContract, provider);
     const apeuManagerContract = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, provider);
-    // const walletObserverContract = new ethers.Contract(addresses.WALLET_OBSERVER_CONTRACT, WalletObserverContract, provider);
 
     // get apeu balance
     const apeuBalance = await apeuContract.balanceOf(address);
@@ -96,24 +89,15 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     let totalPendingReward = 0;
 
     for (let i = 0; i < planetCount; i++) {
-        const metadata = await apeuManagerContract.tokenURI(Number(planetData[i][0][0]));
-        const url = `https://ipfs.io/ipfs/${metadata.split("//")[1]}`;
-        const { data } = await axios.get(url);
         const planet: IPlanetInfoDetails = {
-            id: Number(planetData[i][0][0]),
-            name: String(planetData[i][0][1]),
-            metadata: data,
-            creationTime: Number(planetData[i][0][2]),
-            lastProcessingTimestamp: Number(planetData[i][0][3]),
-            rewardMult: Number(planetData[i][0][4]),
-            planetValue: Number(planetData[i][0][5]) / Math.pow(10, 18),
-            totalClaimed: Number(planetData[i][0][6]) / Math.pow(10, 18),
-            exists: Boolean(planetData[i][0][7]),
+            id: Number(planetData[i][1]),
+            creationTime: Number(planetData[i][0][1]),
+            lastProcessingTimestamp: Number(planetData[i][0][2]),
+            planetValue: Number(planetData[i][0][3]) / Math.pow(10, 18),
+            totalClaimed: Number(planetData[i][0][4]) / Math.pow(10, 18),
+            exists: Boolean(planetData[i][0][5]),
             pendingReward: Number(planetData[i][2]) / Math.pow(10, 18),
             rewardPerDay: Number(planetData[i][3]) / Math.pow(10, 18),
-            compoundDelay: Number(planetData[i][4]),
-            pendingRewardsGross: Number(planetData[i][5]) / Math.pow(10, 18),
-            rewardPerDayGross: Number(planetData[i][6]) / Math.pow(10, 18),
         };
 
         estimatedPerDay += Number(planetData[i][3]);
@@ -125,23 +109,12 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     const estimatedPerDayValue = estimatedPerDay / Math.pow(10, 18);
     const totalPendingRewardValue = totalPendingReward / Math.pow(10, 18);
 
-    //get limits data
-    // let [, , , remainingTransfersIn, remainingTransferOut, remainingSellOut] = await walletObserverContract.getOverviewOf(address);
-    // remainingTransfersIn = ethers.utils.formatUnits(remainingTransfersIn, "ether");
-    // remainingTransferOut = ethers.utils.formatUnits(remainingTransferOut, "ether");
-    // remainingSellOut = ethers.utils.formatUnits(remainingSellOut, "ether");
-
     return {
         balances: {
             avax: avaxVal,
             apeu: apeuVal,
             allowance: apeuAll,
         },
-        // limits: {
-        //     transferIn: remainingTransfersIn,
-        //     transferOut: remainingTransferOut,
-        //     sellOut: remainingSellOut,
-        // },
         planets: planetInfoData,
         number: planetCount,
         estimated: estimatedPerDayValue,
@@ -160,11 +133,6 @@ export interface IAccountSlice {
         apeu: string;
         allowance: string;
     };
-    // limits: {
-    //     transferIn: string;
-    //     transferOut: string;
-    //     sellOut: string;
-    // };
     planets: IPlanetInfoDetails[];
     number: number;
     estimated: number;

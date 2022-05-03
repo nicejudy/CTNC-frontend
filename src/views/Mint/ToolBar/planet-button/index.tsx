@@ -42,11 +42,6 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
         dispatch(compoundReward({ planetId, provider, address, networkID: chainID }));
     };
 
-    // const onUpgrade = async () => {
-    //     if (await checkWrongNetwork()) return;
-    //     dispatch(upgrade({ planetId, provider, address, networkID: chainID }));
-    // };
-
     const onClaimReward = async () => {
         if (await checkWrongNetwork()) return;
         dispatch(cashoutReward({ planetId, provider, address, networkID: chainID }));
@@ -78,12 +73,6 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
             handleOpen();
         };
         filter = action;
-    } else if (action == "rename") {
-        buttonText = "Rename";
-        clickFunc = () => {
-            handleOpen();
-        };
-        filter = action;
     } else if (action == "transfer") {
         buttonText = "Transfer";
         clickFunc = () => {
@@ -111,24 +100,16 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
         };
     } else if (action == "compoundall") {
         buttonText = "Compound All";
-        // buttonText = actionTime == "0" ? "Compound All" : actionTime;
         className = timeLeft == 0 ? "planet-button" : "planet-button disabled";
         clickFunc = () => {
             onCompoundAll();
         };
     } else if (action == "claimall") {
         buttonText = "Claim All";
-        // buttonText = actionTime == "0" ? "Claim All" : actionTime;
         className = timeLeft == 0 ? "planet-button" : "planet-button disabled";
         clickFunc = () => {
             onClaimAll();
         };
-    } else if (action == "merge") {
-        buttonText = "Merge";
-        clickFunc = () => {
-            handleOpen();
-        };
-        filter = action;
     }
 
     const pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {

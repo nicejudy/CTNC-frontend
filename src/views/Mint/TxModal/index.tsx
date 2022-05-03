@@ -1,18 +1,19 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { ReactComponent as XIcon } from "../../../assets/icons/x.svg";
+import GifIcon from "../../../assets/icons/nft.gif";
 import { Box, Modal, Paper, SvgIcon, IconButton, OutlinedInput, InputAdornment, InputLabel, MenuItem, FormHelperText, FormControl, Select } from "@material-ui/core";
 import "./txmodal.scss";
 import { Skeleton } from "@material-ui/lab";
 import { shorten, sleep, trim } from "../../../helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { IReduxState } from "../../../store/slices/state.interface";
-import { createPlanet, renamePlanet, transferPlanet, mergePlanets, upgradePlanet } from "../../../store/slices/planet-thunk";
+import { createPlanet, transferPlanet, upgradePlanet } from "../../../store/slices/planet-thunk";
 import { IPendingTxn, isPendingTxn, txnButtonText } from "../../../store/slices/pending-txns-slice";
 import { IPlanetInfoDetails } from "../../../store/slices/account-slice";
 import { useWeb3Context } from "../../../hooks";
 import { warning } from "../../../store/slices/messages-slice";
 import { messages } from "../../../constants/messages";
-import { META_IMAGES, META_INDEX, META_TYPES, META_DONUT } from "../../../constants";
+import { META_IMAGES } from "../../../constants";
 import { utils } from "ethers";
 import { String } from "lodash";
 
@@ -38,28 +39,22 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
         return state.app.creationMinPrice;
     });
 
+    const compoundDelay = useSelector<IReduxState, number>(state => {
+        return state.app.compoundDelay;
+    });
+
     const apeuBalance = useSelector<IReduxState, string>(state => {
         return state.account.balances && state.account.balances.apeu;
     });
 
     const [quantity, setQuantity] = useState<string>("");
+    const [number, setNumber] = useState<string>("");
     const [name, setName] = useState<string>("");
-
-    const [planetId1, setPlanetId1] = useState<string>("");
-    const [planetId2, setPlanetId2] = useState<string>("");
-
-    const handleChangePlanetId1 = (event: any) => {
-        setPlanetId1(event.target.value);
-    };
-
-    const handleChangePlanetId2 = (event: any) => {
-        setPlanetId2(event.target.value);
-    };
 
     let enabledPlanets = [];
 
     for (let index = 0; index < planets.length; index++) {
-        const actionTime = planets[index].lastProcessingTimestamp + planets[index].compoundDelay;
+        const actionTime = planets[index].lastProcessingTimestamp + compoundDelay;
         if (actionTime <= Math.floor(Date.now() / 1000)) enabledPlanets.push(index);
     }
 
@@ -68,26 +63,15 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
     let text2 = "";
     let titleText = "";
     let buttonText = "";
-    let meta_image = META_IMAGES[parseInt(planetId)];
-    const wood_amount = parseInt(META_DONUT[parseInt(planetId)]) * 1000;
 
     if (filter == "create") {
         text1 = "Input Name";
         text2 = "Judy's house";
-        titleText = "Mint " + META_TYPES[parseInt(planetId)];
+        titleText = "Mint ";
         buttonText = "Create";
         onMint = async () => {
             if (await checkWrongNetwork()) return;
-            dispatch(createPlanet({ name, quantity: wood_amount.toString(), type: META_TYPES[parseInt(planetId)], level: planetId, provider, address, networkID: chainID }));
-        };
-    } else if (filter == "rename") {
-        text1 = "New Name";
-        text2 = "Input New Name";
-        titleText = "Change Name";
-        buttonText = "Change";
-        onMint = async () => {
-            if (await checkWrongNetwork()) return;
-            dispatch(renamePlanet({ id: planetId, name, provider, address, networkID: chainID }));
+            dispatch(createPlanet({ quantity, number, provider, address, networkID: chainID }));
         };
     } else if (filter == "transfer") {
         text1 = "Address";
@@ -98,28 +82,23 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
             if (await checkWrongNetwork()) return;
             dispatch(transferPlanet({ tokenId: planetId, to: name, provider, address, networkID: chainID }));
         };
-    } else if (filter == "merge") {
-        text1 = "New Ape Name";
-        text2 = "Input New Name";
-        titleText = "Merge Apes";
-        buttonText = "Merge";
-        onMint = async () => {
-            if (await checkWrongNetwork()) return;
-            dispatch(mergePlanets({ firstId: planetId1, secondId: planetId2, name, provider, address, networkID: chainID }));
-        };
     } else if (filter == "upgrade") {
         text1 = "Add Wood";
         text2 = "Input New Name";
-        titleText = "Upgrade";
-        buttonText = "Upgrade";
+        titleText = "Stake";
+        buttonText = "Stake";
         onMint = async () => {
             if (await checkWrongNetwork()) return;
             dispatch(upgradePlanet({ id: planetId, quantity, provider, address, networkID: chainID }));
         };
     }
 
-    const setMax = () => {
+    const setMaxQuantity = () => {
         setQuantity(apeuBalance);
+    };
+
+    const setMaxNumber = () => {
+        setNumber("99");
     };
 
     return (
@@ -136,44 +115,8 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                 <Box className="card-content">
                     <div className="txmodal-header">
                         <div className="txmodal-header-token-select-wrap">
-                            {filter == "merge" && (
-                                <div>
-                                    <div className="txmodal-header-help-text">
-                                        <p>First Ape ID</p>
-                                    </div>
-                                    <FormControl className="txmodal-form">
-                                        {/* <InputLabel id="demo-simple-select-required-label">Age</InputLabel> */}
-                                        <Select className="txmodal-form-select" value={planetId1} label="First ID *" onChange={handleChangePlanetId1}>
-                                            {enabledPlanets.map(index => (
-                                                <MenuItem value={planets[index].id}>
-                                                    #{planets[index].id} - {planets[index].name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                    <div className="txmodal-header-help-text">
-                                        <p>Second Ape ID</p>
-                                    </div>
-                                    <FormControl className="txmodal-form">
-                                        {/* <InputLabel id="demo-simple-select-required-label">Age</InputLabel> */}
-                                        <Select
-                                            // inputProps={{ "aria-label": "Without label" }}
-                                            className="txmodal-form-select"
-                                            value={planetId2}
-                                            label="Second ID *"
-                                            onChange={handleChangePlanetId2}
-                                        >
-                                            {enabledPlanets.map(index => (
-                                                <MenuItem value={planets[index].id}>
-                                                    #{planets[index].id} - {planets[index].name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            )}
-                            {filter == "create" && <img className="txmodal-header-img" src={`https://ipfs.io/ipfs/${meta_image}`} />}
-                            {filter != "upgrade" && (
+                            {filter == "create" && <img className="txmodal-header-img" src={GifIcon} />}
+                            {filter != "upgrade" && filter != "create" && (
                                 <>
                                     <div className="txmodal-header-help-text">
                                         <p>{text1}</p>
@@ -190,17 +133,20 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                             )}
                             {filter == "create" && (
                                 <>
-                                    <div className="txmodal-header-help-text">
+                                    {/* <div className="txmodal-header-help-text">
                                         <p>
-                                            Required : <span className="txmodal-span">{META_DONUT[parseInt(planetId)]}</span> WOOD
+                                            Min Value : <span className="txmodal-span">{creationMinPrice}</span> WOOD
                                         </p>
                                     </div>
-                                    {/* <div className="txmodal-header-help-text">
+                                    <div className="txmodal-header-help-text">
                                         <p>
                                             Balance : <span className="txmodal-span">{Math.floor(parseInt(apeuBalance))}</span> WOOD
                                         </p>
                                     </div> */}
-                                    {/* <OutlinedInput
+                                    <div className="txmodal-header-help-text">
+                                        <p>Wood</p>
+                                    </div>
+                                    <OutlinedInput
                                         type="number"
                                         placeholder={new Intl.NumberFormat("en-US").format(parseInt(creationMinPrice))}
                                         className="txmodal-header-token-select-input"
@@ -209,12 +155,30 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                                         labelWidth={0}
                                         endAdornment={
                                             <InputAdornment position="end">
-                                                <div className="txmodal-header-token-select-input-btn" onClick={setMax}>
+                                                <div className="txmodal-header-token-select-input-btn" onClick={setMaxQuantity}>
                                                     <p>Max</p>
                                                 </div>
                                             </InputAdornment>
                                         }
-                                    /> */}
+                                    />
+                                    <div className="txmodal-header-help-text">
+                                        <p>Amount</p>
+                                    </div>
+                                    <OutlinedInput
+                                        type="number"
+                                        placeholder="0"
+                                        className="txmodal-header-token-select-input"
+                                        value={number}
+                                        onChange={e => setNumber(e.target.value)}
+                                        labelWidth={0}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <div className="txmodal-header-token-select-input-btn" onClick={setMaxNumber}>
+                                                    <p>Max</p>
+                                                </div>
+                                            </InputAdornment>
+                                        }
+                                    />
                                 </>
                             )}
                             {filter == "upgrade" && (
@@ -231,7 +195,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                                         labelWidth={0}
                                         endAdornment={
                                             <InputAdornment position="end">
-                                                <div className="txmodal-header-token-select-input-btn" onClick={setMax}>
+                                                <div className="txmodal-header-token-select-input-btn" onClick={setMaxQuantity}>
                                                     <p>Max</p>
                                                 </div>
                                             </InputAdornment>

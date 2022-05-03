@@ -77,20 +77,6 @@ function Dashboard() {
 
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
-                                <p className="card-title">Burned From Services</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(app.burnedFromRenaming)} WOOD`}</p>
-                                {/* <p className="card-title">
-                                    {isAppLoading ? (
-                                        <Skeleton width="100px" />
-                                    ) : (
-                                        `$${new Intl.NumberFormat("en-US").format(Math.floor((app.burnedFromRenaming * app.mimPrice * app.marketPrice) / 10000))}`
-                                    )}
-                                </p> */}
-                            </div>
-                        </Grid>
-
-                        <Grid item lg={4} md={6} sm={6} xs={12}>
-                            <div className="dashboard-card">
                                 <p className="card-title">My NFTs</p>
                                 <p className="card-value">{isAccountLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(account.number)}`}</p>
                             </div>

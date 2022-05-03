@@ -16,7 +16,6 @@ export const loadAppDetails = createAsyncThunk(
     "app/loadAppDetails",
     //@ts-ignore
     async ({ networkID, provider }: ILoadAppDetails) => {
-        // const mimPrice = getTokenPrice("MIM");
         const addresses = getAddresses(networkID);
 
         const apeuContract = new ethers.Contract(addresses.APEU_ADDRESS, ApeuContract, provider);
@@ -28,27 +27,18 @@ export const loadAppDetails = createAsyncThunk(
 
         const totalPlanets = await apeuManagerContract.totalSupply();
 
+        const compoundDelay = await apeuManagerContract.compoundDelay();
+
         const totalValueLocked = Math.floor((await apeuManagerContract.totalValueLocked()) / Math.pow(10, 18));
-
-        // const burnedFromRenaming =
-        //     Math.floor((await apeuManagerContract.burnedFromRenaming()) / Math.pow(10, 18)) + Math.floor((await apeuManagerContract.burnedFromMerging()) / Math.pow(10, 18));
-
-        const burnedFromRenaming = Math.floor((await apeuManagerContract.burnedFromRenaming()) / Math.pow(10, 18));
-
-        // const calculateTotalDailyEmission = Math.floor((await apeuManagerContract.calculateTotalDailyEmission()) / Math.pow(10, 18));
 
         const creationMinPrice = ethers.utils.formatUnits(await apeuManagerContract.createMinValue(), "ether");
 
-        console.log("point");
-
         return {
-            // mimPrice,
             totalSupply,
             totalPlanets,
+            compoundDelay,
             marketPrice,
             totalValueLocked,
-            burnedFromRenaming,
-            // calculateTotalDailyEmission,
             creationMinPrice,
         };
     },
@@ -60,13 +50,11 @@ const initialState = {
 
 export interface IAppSlice {
     loading: boolean;
-    // mimPrice: number;
     totalSupply: number;
     totalPlanets: number;
+    compoundDelay: number;
     marketPrice: number;
     totalValueLocked: number;
-    burnedFromRenaming: number;
-    // calculateTotalDailyEmission: number;
     creationMinPrice: string;
     networkID: number;
 }

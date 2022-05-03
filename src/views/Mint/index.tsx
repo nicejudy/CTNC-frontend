@@ -12,6 +12,10 @@ function Mint() {
         return state.account.planets;
     });
 
+    const compoundDelay = useSelector<IReduxState, number>(state => {
+        return state.app.compoundDelay;
+    });
+
     return (
         <>
             {planets == undefined ? <></> : <ToolBar planets={planets} />}
@@ -24,7 +28,7 @@ function Mint() {
                             ) : (
                                 planets.map(planet => (
                                     <Grid item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                        <ApeCard planet={planet} />
+                                        <ApeCard planet={planet} compoundDelay={compoundDelay * 1} />
                                     </Grid>
                                 ))
                             )}
