@@ -36,9 +36,12 @@ export const createPlanet = createAsyncThunk("mint/createPlanet", async ({ quant
 
     try {
         const gasPrice = await getGasPrice(provider);
+        console.log(number);
         const etherValue = mintPrice * parseInt(number);
 
-        tx = await apeuManager.createNFTWithTokens(ethers.utils.parseUnits(quantity, "ether"), number, {
+        console.log(etherValue);
+
+        tx = await apeuManager.createNFTWithTokens(number, ethers.utils.parseUnits(quantity, "ether"), {
             value: ethers.utils.parseEther(etherValue.toString()),
             gasPrice: gasPrice,
         });
