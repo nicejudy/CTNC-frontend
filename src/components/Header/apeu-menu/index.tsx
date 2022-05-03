@@ -31,8 +31,8 @@ function ApeuButton() {
                     params: {
                         type: "ERC20",
                         options: {
-                            address: "0xee7244231DF6A0D8c4D9b54886ebdA92b6580dA9",
-                            symbol: "WOOD",
+                            address: APEU_ADDRESS,
+                            symbol: "MEAT",
                             decimals: TOKEN_DECIMALS,
                             image: `${host}/${WoodIcon}`,
                         },
