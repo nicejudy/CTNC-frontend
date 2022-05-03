@@ -50,6 +50,7 @@ interface ILoadAccountDetails {
 
 export interface IPlanetInfoDetails {
     id: number;
+    owner: string;
     creationTime: number;
     lastProcessingTimestamp: number;
     planetValue: number;
@@ -61,8 +62,6 @@ export interface IPlanetInfoDetails {
 
 export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails) => {
     const addresses = getAddresses(networkID);
-
-    const cache: { [key: string]: number } = {};
 
     const avaxBalance = await provider.getSigner().getBalance();
     const avaxVal = ethers.utils.formatEther(avaxBalance);
@@ -91,6 +90,7 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     for (let i = 0; i < planetCount; i++) {
         const planet: IPlanetInfoDetails = {
             id: Number(planetData[i][1]),
+            owner: address,
             creationTime: Number(planetData[i][0][1]),
             lastProcessingTimestamp: Number(planetData[i][0][2]),
             planetValue: Number(planetData[i][0][3]) / Math.pow(10, 18),

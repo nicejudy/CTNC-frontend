@@ -7,7 +7,7 @@ import { loadAccountDetails } from "../store/slices/account-slice";
 import { IReduxState } from "../store/slices/state.interface";
 import Loading from "../components/Loader";
 import ViewBase from "../components/ViewBase";
-import { Dashboard, NotFound, Mint, Landing, Swap, Chart, ToS, Policy } from "../views";
+import { Dashboard, NotFound, Mint, Gallery, Landing, Swap, Chart, ToS, Policy } from "../views";
 import "./style.scss";
 
 function App() {
@@ -87,6 +87,18 @@ function App() {
             <Route exact path="/mint">
                 <ViewBase>
                     <Mint />
+                </ViewBase>
+            </Route>
+
+            <Route exact path="/gallery">
+                <ViewBase>
+                    <Gallery />
+                </ViewBase>
+            </Route>
+
+            <Route exact path="/find">
+                <ViewBase>
+                    <Gallery />
                 </ViewBase>
             </Route>
 

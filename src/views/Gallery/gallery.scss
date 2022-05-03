@@ -1,0 +1,50 @@
+.gallery-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+
+  width: 89%;
+  // max-width: 833px;
+  margin: auto;
+
+  .gallery-infos-wrap{
+    width: 100%;
+    .gallery-search-box {
+      width: 100%;
+      margin-bottom: 30px;
+
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      outline: none;
+
+      .MuiOutlinedInput-input {
+          font-family: Montserrat Medium;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 16px;
+          color: rgb(255, 255, 255);
+          padding: 14px 20px;
+      }
+
+      .MuiOutlinedInput-notchedOutline {
+          border-color: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+    .gallery-infos-planets {
+      margin-top: 10px;
+      .gallery-infos-search-txt {
+        font-family: Montserrat Medium;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        color: white;
+        .gallery-infos-search-span {
+          font-size: 20px;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}

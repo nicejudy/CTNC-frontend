@@ -1,6 +1,7 @@
 export { default as Dashboard } from "./Dashboard";
 export { default as Landing } from "./Landing";
 export { default as Mint } from "./Mint";
+export { default as Gallery } from "./Gallery";
 export { default as Swap } from "./Swap";
 export { default as Chart } from "./Chart";
 export { default as ToS } from "./ToS";

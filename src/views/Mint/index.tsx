@@ -4,8 +4,8 @@ import "./mint.scss";
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
 import { IPlanetInfoDetails } from "../../store/slices/account-slice";
-import ToolBar from "./ToolBar";
-import ApeCard from "./ApeCard";
+import ToolBar from "src/components/ToolBar";
+import ApeCard from "src/components/ApeCard";
 
 function Mint() {
     const planets = useSelector<IReduxState, IPlanetInfoDetails[]>(state => {
@@ -28,7 +28,7 @@ function Mint() {
                             ) : (
                                 planets.map(planet => (
                                     <Grid item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                        <ApeCard planet={planet} compoundDelay={compoundDelay * 1} />
+                                        <ApeCard planet={planet} compoundDelay={compoundDelay * 1} filter="" />
                                     </Grid>
                                 ))
                             )}

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IReduxState } from "../../../../store/slices/state.interface";
-import { IPendingTxn } from "../../../../store/slices/pending-txns-slice";
-import { useWeb3Context } from "../../../../hooks";
-import { compoundAll, claimAll, compoundReward, cashoutReward } from "../../../../store/slices/planet-thunk";
+import { IReduxState } from "src/store/slices/state.interface";
+import { IPendingTxn } from "src/store/slices/pending-txns-slice";
+import { useWeb3Context } from "src/hooks";
+import { compoundAll, claimAll, compoundReward, cashoutReward } from "src/store/slices/planet-thunk";
 import "./planet-button.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import TxModal from "../../TxModal";
+import TxModal from "../TxModal";
 
 interface IPlanetButtonProps {
     action: string;

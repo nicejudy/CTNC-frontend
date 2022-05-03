@@ -1,19 +1,19 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { ReactComponent as XIcon } from "../../../assets/icons/x.svg";
-import GifIcon from "../../../assets/icons/nft.gif";
+import { ReactComponent as XIcon } from "src/assets/icons/x.svg";
+import GifIcon from "src/assets/icons/nft.gif";
 import { Box, Modal, Paper, SvgIcon, IconButton, OutlinedInput, InputAdornment, InputLabel, MenuItem, FormHelperText, FormControl, Select } from "@material-ui/core";
 import "./txmodal.scss";
 import { Skeleton } from "@material-ui/lab";
-import { shorten, sleep, trim } from "../../../helpers";
+import { shorten, sleep, trim } from "src/helpers";
 import { useDispatch, useSelector } from "react-redux";
-import { IReduxState } from "../../../store/slices/state.interface";
-import { createPlanet, transferPlanet, upgradePlanet } from "../../../store/slices/planet-thunk";
-import { IPendingTxn, isPendingTxn, txnButtonText } from "../../../store/slices/pending-txns-slice";
-import { IPlanetInfoDetails } from "../../../store/slices/account-slice";
-import { useWeb3Context } from "../../../hooks";
-import { warning } from "../../../store/slices/messages-slice";
-import { messages } from "../../../constants/messages";
-import { META_IMAGES } from "../../../constants";
+import { IReduxState } from "src/store/slices/state.interface";
+import { createPlanet, transferPlanet, upgradePlanet } from "src/store/slices/planet-thunk";
+import { IPendingTxn, isPendingTxn, txnButtonText } from "src/store/slices/pending-txns-slice";
+import { IPlanetInfoDetails } from "src/store/slices/account-slice";
+import { useWeb3Context } from "src/hooks";
+import { warning } from "src/store/slices/messages-slice";
+import { messages } from "src/constants/messages";
+import { META_IMAGES } from "src/constants";
 import { utils } from "ethers";
 import { String } from "lodash";
 
@@ -25,9 +25,6 @@ interface ITxProps {
 }
 
 function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
-    const planets = useSelector<IReduxState, IPlanetInfoDetails[]>(state => {
-        return state.account.planets;
-    });
     const { provider, address, chainID, checkWrongNetwork } = useWeb3Context();
     const dispatch = useDispatch();
 
@@ -50,13 +47,6 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
     const [quantity, setQuantity] = useState<string>("");
     const [number, setNumber] = useState<string>("");
     const [name, setName] = useState<string>("");
-
-    let enabledPlanets = [];
-
-    for (let index = 0; index < planets.length; index++) {
-        const actionTime = planets[index].lastProcessingTimestamp + compoundDelay;
-        if (actionTime <= Math.floor(Date.now() / 1000)) enabledPlanets.push(index);
-    }
 
     let onMint = () => {};
     let text1 = "";

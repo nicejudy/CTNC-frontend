@@ -21,10 +21,16 @@ function NavContent() {
         if (currentPath.indexOf("mint") >= 0 && page === "mint") {
             return true;
         }
+        if (currentPath.indexOf("gallery") >= 0 && page === "gallery") {
+            return true;
+        }
         if (currentPath.indexOf("swap") >= 0 && page === "swap") {
             return true;
         }
         if (currentPath.indexOf("chart") >= 0 && page === "chart") {
+            return true;
+        }
+        if (currentPath.indexOf("find") >= 0 && page === "gallery") {
             return true;
         }
         return false;
@@ -84,6 +90,19 @@ function NavContent() {
                         <div className="dapp-menu-item">
                             {/* <img alt="" src={MintIcon} /> */}
                             <p>MY NFTs</p>
+                        </div>
+                    </Link>
+
+                    <Link
+                        component={NavLink}
+                        to="/gallery"
+                        isActive={(match: any, location: any) => {
+                            return checkPage(location, "gallery");
+                        }}
+                        className={classnames("button-dapp-menu", { active: isActive })}
+                    >
+                        <div className="dapp-menu-item">
+                            <p>GALLERY</p>
                         </div>
                     </Link>
 

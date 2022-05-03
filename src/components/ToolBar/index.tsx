@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IReduxState } from "../../../store/slices/state.interface";
+import { IReduxState } from "src/store/slices/state.interface";
 import { AppBar, Toolbar, Popper, Fade } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import PlanetButton from "./planet-button";
+import PlanetButton from "../planet-button";
 import "./toolbar.scss";
-import { DRAWER_WIDTH, TRANSITION_DURATION } from "../../../constants/style";
-import { IPlanetInfoDetails } from "../../../store/slices/account-slice";
+import { DRAWER_WIDTH, TRANSITION_DURATION } from "src/constants/style";
+import { IPlanetInfoDetails } from "src/store/slices/account-slice";
 import TxModal from "../TxModal";
 
 const useStyles = makeStyles(theme => ({
@@ -54,7 +54,7 @@ function ToolBar({ planets }: IToolBarProps) {
     let timestamp = 0;
 
     for (let index = 0; index < count; index++) {
-        const actionTime = planets[index].lastProcessingTimestamp + compoundDelay;
+        const actionTime = planets[index].lastProcessingTimestamp + compoundDelay * 1;
         if (timestamp < actionTime) timestamp = actionTime;
         if (actionTime <= Math.floor(Date.now() / 1000)) enabledCount++;
     }
@@ -81,9 +81,6 @@ function ToolBar({ planets }: IToolBarProps) {
     };
 
     const isSmallScreen = useMediaQuery("(max-width: 710px)");
-
-    // const actionTime = timestamp == 0 ? 0 : new Date(timestamp * 1000).toISOString().substring(11, 19);
-    // const actionTime = timestamp == 0 ? "0" : new Date(timestamp * 1000).toISOString().substring(11, 19);
 
     return (
         <>
