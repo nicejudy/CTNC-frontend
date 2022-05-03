@@ -66,21 +66,14 @@ function Dashboard() {
                             </div>
                         </Grid>
 
-                        <Grid item lg={4} md={6} sm={6} xs={12}>
+                        {/* <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
                                 <p className="card-title">Total Reward Per Day</p>
                                 <p className="card-value">
                                     {isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(app.calculateTotalDailyEmission)} WOOD`}
                                 </p>
-                                {/* <p className="card-title">
-                                    {isAppLoading ? (
-                                        <Skeleton width="100px" />
-                                    ) : (
-                                        `$${new Intl.NumberFormat("en-US").format(Math.floor((app.calculateTotalDailyEmission * app.mimPrice * app.marketPrice) / 10000))}`
-                                    )}
-                                </p> */}
                             </div>
-                        </Grid>
+                        </Grid> */}
 
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">

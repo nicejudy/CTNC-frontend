@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch, BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAddress, useWeb3Context } from "../hooks";
 import { loadAppDetails } from "../store/slices/app-slice";

@@ -204,19 +204,6 @@
         },
         {
             "inputs": [],
-            "name": "calculateTotalDailyEmission",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
             "name": "cashoutAll",
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -252,6 +239,19 @@
             "inputs": [
                 {
                     "internalType": "uint256",
+                    "name": "_createMinValue",
+                    "type": "uint256"
+                }
+            ],
+            "name": "changeCreateMinValue",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
                     "name": "_maxSupply",
                     "type": "uint256"
                 }
@@ -270,32 +270,6 @@
                 }
             ],
             "name": "changeMintPrice",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_creationMinPrice",
-                    "type": "uint256"
-                }
-            ],
-            "name": "changeNodeMinPrice",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_processingFee",
-                    "type": "uint256"
-                }
-            ],
-            "name": "changeProcessingFee",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -327,31 +301,7 @@
             "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "uint24[6]",
-                    "name": "_tierLevel",
-                    "type": "uint24[6]"
-                },
-                {
-                    "internalType": "uint16[6]",
-                    "name": "_tierSlope",
-                    "type": "uint16[6]"
-                }
-            ],
-            "name": "changeTierSystem",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string[]",
-                    "name": "tokenURIs",
-                    "type": "string[]"
-                }
-            ],
+            "inputs": [],
             "name": "compoundAll",
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -376,11 +326,6 @@
                     "internalType": "uint256",
                     "name": "_nftId",
                     "type": "uint256"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_tokenURI",
-                    "type": "string"
                 }
             ],
             "name": "compoundReward",
@@ -389,37 +334,8 @@
             "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "nftName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "nftValue",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_tokenURI",
-                    "type": "string"
-                }
-            ],
-            "name": "createNFTWithTokens",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
             "inputs": [],
-            "name": "creationMinPrice",
+            "name": "createMinValue",
             "outputs": [
                 {
                     "internalType": "uint256",
@@ -428,6 +344,24 @@
                 }
             ],
             "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "nftNumber",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "nftValue",
+                    "type": "uint256"
+                }
+            ],
+            "name": "createNFTWithTokens",
+            "outputs": [],
+            "stateMutability": "payable",
             "type": "function"
         },
         {
@@ -488,11 +422,6 @@
                                     "type": "uint256"
                                 },
                                 {
-                                    "internalType": "string",
-                                    "name": "name",
-                                    "type": "string"
-                                },
-                                {
                                     "internalType": "uint256",
                                     "name": "creationTime",
                                     "type": "uint256"
@@ -500,11 +429,6 @@
                                 {
                                     "internalType": "uint256",
                                     "name": "lastProcessingTimestamp",
-                                    "type": "uint256"
-                                },
-                                {
-                                    "internalType": "uint256",
-                                    "name": "rewardMult",
                                     "type": "uint256"
                                 },
                                 {
@@ -523,7 +447,7 @@
                                     "type": "bool"
                                 }
                             ],
-                            "internalType": "struct ZootopiaEcoSystem.NFTEntity",
+                            "internalType": "struct NFTManager.NFTEntity",
                             "name": "nft",
                             "type": "tuple"
                         },
@@ -541,14 +465,9 @@
                             "internalType": "uint256",
                             "name": "rewardPerDay",
                             "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "compoundDelay",
-                            "type": "uint256"
                         }
                     ],
-                    "internalType": "struct ZootopiaEcoSystem.NFTInfoEntity[]",
+                    "internalType": "struct NFTManager.NFTInfoEntity[]",
                     "name": "",
                     "type": "tuple[]"
                 }
@@ -596,30 +515,6 @@
                 }
             ],
             "name": "isApprovedForAll",
-            "outputs": [
-                {
-                    "internalType": "bool",
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "account",
-                    "type": "address"
-                },
-                {
-                    "internalType": "string",
-                    "name": "nftName",
-                    "type": "string"
-                }
-            ],
-            "name": "isNameAvailable",
             "outputs": [
                 {
                     "internalType": "bool",
@@ -766,19 +661,6 @@
         },
         {
             "inputs": [],
-            "name": "processingFee",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
             "name": "recoverLostETH",
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -803,29 +685,6 @@
                 }
             ],
             "name": "recoverLostTokens",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_nftId",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "string",
-                    "name": "nftName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_tokenURI",
-                    "type": "string"
-                }
-            ],
-            "name": "renameNFT",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -930,11 +789,6 @@
                     "internalType": "uint256",
                     "name": "nftValue",
                     "type": "uint256"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_tokenURI",
-                    "type": "string"
                 }
             ],
             "name": "stakeTokensOnNFT",
@@ -969,44 +823,6 @@
                     "internalType": "string",
                     "name": "",
                     "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tierLevel",
-            "outputs": [
-                {
-                    "internalType": "uint24",
-                    "name": "",
-                    "type": "uint24"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tierSlope",
-            "outputs": [
-                {
-                    "internalType": "uint16",
-                    "name": "",
-                    "type": "uint16"
                 }
             ],
             "stateMutability": "view",

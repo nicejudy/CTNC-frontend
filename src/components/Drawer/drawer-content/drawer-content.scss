@@ -24,7 +24,6 @@
       p{
         font-family: Montserrat SemiBold;
         font-size: 14px;
-        // color: #43ff3c;
         color: #FFFFFF;
       }
     }
@@ -76,7 +75,6 @@
           p{
             font-weight: 600;
             font-size: 16px;
-            // color: #08e900;
             color: white;
             font-family: Montserrat SemiBold;
           }
@@ -86,7 +84,7 @@
       .button-dapp-menu.active {
         .dapp-menu-item{
           p{
-            color: #08e900;
+            color: rgb(131, 131, 262);
           }
         }
       }

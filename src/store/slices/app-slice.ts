@@ -35,9 +35,9 @@ export const loadAppDetails = createAsyncThunk(
 
         const burnedFromRenaming = Math.floor((await apeuManagerContract.burnedFromRenaming()) / Math.pow(10, 18));
 
-        const calculateTotalDailyEmission = Math.floor((await apeuManagerContract.calculateTotalDailyEmission()) / Math.pow(10, 18));
+        // const calculateTotalDailyEmission = Math.floor((await apeuManagerContract.calculateTotalDailyEmission()) / Math.pow(10, 18));
 
-        const creationMinPrice = ethers.utils.formatUnits(await apeuManagerContract.creationMinPrice(), "ether");
+        const creationMinPrice = ethers.utils.formatUnits(await apeuManagerContract.createMinValue(), "ether");
 
         console.log("point");
 
@@ -48,7 +48,7 @@ export const loadAppDetails = createAsyncThunk(
             marketPrice,
             totalValueLocked,
             burnedFromRenaming,
-            calculateTotalDailyEmission,
+            // calculateTotalDailyEmission,
             creationMinPrice,
         };
     },
@@ -66,7 +66,7 @@ export interface IAppSlice {
     marketPrice: number;
     totalValueLocked: number;
     burnedFromRenaming: number;
-    calculateTotalDailyEmission: number;
+    // calculateTotalDailyEmission: number;
     creationMinPrice: string;
     networkID: number;
 }
