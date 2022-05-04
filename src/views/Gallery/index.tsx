@@ -106,7 +106,7 @@ function Gallery() {
                     )}
                     <Grid container spacing={4}>
                         {planets.length == 0 ? (
-                            <>asdfasdf</>
+                            <></>
                         ) : (
                             planets.map(planet => (
                                 <Grid key={planet.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
