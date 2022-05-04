@@ -30,9 +30,6 @@ function NavContent() {
         if (currentPath.indexOf("chart") >= 0 && page === "chart") {
             return true;
         }
-        if (currentPath.indexOf("find") >= 0 && page === "gallery") {
-            return true;
-        }
         return false;
     }, []);
 

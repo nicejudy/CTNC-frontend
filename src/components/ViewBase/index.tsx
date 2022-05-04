@@ -71,7 +71,7 @@ function ViewBase({ children }: IViewBaseProps) {
                 )} */}
                 {!isSmallScreen && (
                     <div className="cubes-bottom">
-                        <img height="400" alt="" src={cubesImage} />
+                        <img height="250" alt="" src={cubesImage} />
                     </div>
                 )}
                 {children}

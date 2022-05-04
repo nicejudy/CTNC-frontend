@@ -2,15 +2,25 @@ import { useEffect, useState, useCallback } from "react";
 import { Route, Redirect, Switch, BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAddress, useWeb3Context } from "../hooks";
+import Cookies from "universal-cookie";
+import { useQueryParam, StringParam } from "use-query-params";
 import { loadAppDetails } from "../store/slices/app-slice";
 import { loadAccountDetails } from "../store/slices/account-slice";
 import { IReduxState } from "../store/slices/state.interface";
 import Loading from "../components/Loader";
 import ViewBase from "../components/ViewBase";
-import { Dashboard, NotFound, Mint, Gallery, Landing, Swap, Chart, ToS, Policy } from "../views";
+import { Dashboard, NotFound, Mint, Gallery, Landing, Swap, Chart, ToS, Policy, Find } from "../views";
 import "./style.scss";
 
 function App() {
+    const cookies = new Cookies();
+
+    const [id, setId] = useQueryParam("id", StringParam);
+
+    if (id) {
+        cookies.set("id", id);
+    }
+
     const dispatch = useDispatch();
 
     const { connect, provider, hasCachedProvider, chainID, connected } = useWeb3Context();
@@ -78,51 +88,49 @@ function App() {
 
     return (
         <Switch>
-            <Route path="/dashboard">
+            <Route exact path="/dashboard">
                 <ViewBase>
                     <Dashboard />
                 </ViewBase>
             </Route>
 
-            <Route path="/mint">
+            <Route exact path="/mint">
                 <ViewBase>
                     <Mint />
                 </ViewBase>
             </Route>
 
-            <Route path="/gallery">
+            <Route exact path="/gallery">
                 <ViewBase>
                     <Gallery />
                 </ViewBase>
             </Route>
 
             <Route path="/find">
-                <ViewBase>
-                    <Gallery />
-                </ViewBase>
+                <ViewBase>{!id ? <Gallery /> : <Find />}</ViewBase>
             </Route>
 
-            <Route path="/swap">
+            <Route exact path="/swap">
                 <ViewBase>
                     <Swap />
                 </ViewBase>
             </Route>
 
-            <Route path="/chart">
+            <Route exact path="/chart">
                 <ViewBase>
                     <Chart />
                 </ViewBase>
             </Route>
 
-            <Route path="/tos">
+            <Route exact path="/tos">
                 <ToS />
             </Route>
 
-            <Route path="/privacy-policy">
+            <Route exact path="/privacy-policy">
                 <Policy />
             </Route>
 
-            <Route path="/">
+            <Route exact path="/">
                 <Landing />
             </Route>
 

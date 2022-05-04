@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "@material-ui/core";
+import { NavLink, Link as ReactLink } from "react-router-dom";
 import { getAddresses, Networks, META_IMAGES, META_JSONS } from "src/constants";
 import PlanetButton from "../planet-button";
+import Cookies from "universal-cookie";
 import "./apecard.scss";
 import { getNFTLevel } from "src/helpers";
 import { IPlanetInfoDetails } from "src/store/slices/account-slice";
@@ -33,6 +35,8 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
 
     const [timeLeft, setTimeLeft] = useState(getTimeLeft());
 
+    const cookies = new Cookies();
+
     useEffect(() => {
         let timer = setInterval(() => {
             setTimeLeft(getTimeLeft());
@@ -44,6 +48,10 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
 
     const imageUrl = `https://ipfs.io/ipfs/${META_IMAGES}/${planet.id}.png`;
 
+    const setCookie = () => {
+        cookies.set("address", planet.owner);
+    };
+
     return (
         <div className="ape-card">
             <img width="200" height="200" src={imageUrl} />
@@ -52,7 +60,12 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
             <br />
             {filter == "search" && (
                 <p className="card-title">
-                    Owner: <span className="card-value">{shorten(planet.owner)}</span>
+                    Owner:&nbsp;
+                    <Link href={`https://etherscan.io/address/${planet.owner}`} target="_blank">
+                        <span className="card-value" onClick={setCookie}>
+                            {shorten(planet.owner)}
+                        </span>
+                    </Link>
                 </p>
             )}
             <p className="card-title">

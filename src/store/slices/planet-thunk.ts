@@ -6,6 +6,7 @@ import { ApeuManagerContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { loadAccountDetails } from "./account-slice";
+import { loadAppDetails } from "./app-slice";
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { Networks } from "../../constants/blockchain";
 import { warning, success, info, error } from "./messages-slice";
@@ -59,6 +60,7 @@ export const createPlanet = createAsyncThunk("mint/createPlanet", async ({ quant
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -100,6 +102,7 @@ export const upgradePlanet = createAsyncThunk("mint/upgradePlanet", async ({ id,
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -141,6 +144,7 @@ export const transferPlanet = createAsyncThunk("mint/transferPlanet", async ({ t
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -180,6 +184,7 @@ export const compoundAll = createAsyncThunk("mint/compoundAll", async ({ provide
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -213,6 +218,7 @@ export const claimAll = createAsyncThunk("mint/claimAll", async ({ provider, add
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -253,6 +259,7 @@ export const compoundReward = createAsyncThunk("mint/compoundReward", async ({ p
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -286,6 +293,7 @@ export const cashoutReward = createAsyncThunk("mint/cashoutReward", async ({ pla
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
     await dispatch(loadAccountDetails({ networkID, provider, address }));
+    await dispatch(loadAppDetails({ networkID, provider }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
