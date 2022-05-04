@@ -78,51 +78,51 @@ function App() {
 
     return (
         <Switch>
-            <Route exact path="/dashboard">
+            <Route path="/dashboard">
                 <ViewBase>
                     <Dashboard />
                 </ViewBase>
             </Route>
 
-            <Route exact path="/mint">
+            <Route path="/mint">
                 <ViewBase>
                     <Mint />
                 </ViewBase>
             </Route>
 
-            <Route exact path="/gallery">
+            <Route path="/gallery">
                 <ViewBase>
                     <Gallery />
                 </ViewBase>
             </Route>
 
-            <Route exact path="/find">
+            <Route path="/find">
                 <ViewBase>
                     <Gallery />
                 </ViewBase>
             </Route>
 
-            <Route exact path="/swap">
+            <Route path="/swap">
                 <ViewBase>
                     <Swap />
                 </ViewBase>
             </Route>
 
-            <Route exact path="/chart">
+            <Route path="/chart">
                 <ViewBase>
                     <Chart />
                 </ViewBase>
             </Route>
 
-            <Route exact path="/tos">
+            <Route path="/tos">
                 <ToS />
             </Route>
 
-            <Route exact path="/privacy-policy">
+            <Route path="/privacy-policy">
                 <Policy />
             </Route>
 
-            <Route exact path="/">
+            <Route path="/">
                 {/* <Redirect to="/dashboard" /> */}
                 <Landing />
             </Route>
