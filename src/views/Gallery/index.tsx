@@ -3,6 +3,8 @@ import { ethers } from "ethers";
 import { useSelector } from "react-redux";
 import { Grid, Zoom, TextField, OutlinedInput } from "@material-ui/core";
 import { trim } from "src/helpers";
+import { useQueryParam, StringParam } from "use-query-params";
+import Cookies from "universal-cookie";
 import "./gallery.scss";
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "src/store/slices/state.interface";
@@ -22,8 +24,11 @@ function Gallery() {
     const provider = new StaticJsonRpcProvider(getMainnetURI());
     const chainID = DEFAULD_NETWORK;
 
+    const [id, setID] = useQueryParam("id", StringParam);
+    const [address, setAddress] = useQueryParam("address", StringParam);
+
     const [name, setName] = useState<string[]>([]);
-    const [query, setQuery] = useState<string>("");
+    let [query, setQuery] = useState<string>("");
 
     const [planets, setPlanets] = useState<IPlanetInfoDetails[]>([]);
 
@@ -34,6 +39,8 @@ function Gallery() {
             else if (isNameArray(name[0])) return;
             else setPlanets([]);
             setQuery(name[0]);
+            setID(undefined);
+            setAddress(undefined);
             setName([]);
         }
     };
@@ -48,6 +55,18 @@ function Gallery() {
         setPlanets(data.planets);
     };
 
+    if (id) {
+        if (parseInt(id) > 0 && parseInt(id) <= app.totalPlanets * 1) searchID([id]);
+        else setPlanets([]);
+        query = id;
+    }
+
+    if (address) {
+        if (ethers.utils.isAddress(address)) searchAddress(address);
+        else setPlanets([]);
+        query = address;
+    }
+
     const isNameArray = (name: string) => {
         if (!name.startsWith("[")) return false;
         if (!name.endsWith("]")) return false;
@@ -60,6 +79,8 @@ function Gallery() {
         }
         searchID(ids);
         setQuery(name);
+        setID(undefined);
+        setAddress(undefined);
         setName([]);
         return true;
     };
@@ -69,7 +90,7 @@ function Gallery() {
             <div className="gallery-infos-wrap">
                 <OutlinedInput
                     type="text"
-                    placeholder="Search by Address / id / [id1, id2, ...]"
+                    placeholder="Search by address / id / [id1, id2, ...]"
                     className="gallery-search-box"
                     value={name}
                     onChange={e => setName([e.target.value])}
@@ -87,7 +108,7 @@ function Gallery() {
                                 <Skeleton width="100px" />
                             ) : (
                                 planets.map(planet => (
-                                    <Grid item xl={3} lg={4} md={6} sm={6} xs={12}>
+                                    <Grid key={planet.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
                                         <ApeCard planet={planet} compoundDelay={app.compoundDelay * 1} filter="search" />
                                     </Grid>
                                 ))

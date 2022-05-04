@@ -64,7 +64,7 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
             <p className="card-title">
                 Daily Profit: <span className="card-value">{Math.round((planet.rewardPerDay / planet.planetValue) * 10000) / 100}</span> %
             </p>
-            {filter == "search" && (
+            {filter != "search" && (
                 <>
                     <div className={className}>
                         {timeLeft == 0 ? (

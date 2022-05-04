@@ -5,7 +5,9 @@ import { QueryParamProvider } from "use-query-params";
 function Root() {
     return (
         <QueryParamProvider>
-            <App />
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
         </QueryParamProvider>
     );
 }
