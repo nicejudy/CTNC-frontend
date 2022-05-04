@@ -98,23 +98,23 @@ function Gallery() {
                     labelWidth={0}
                 />
                 <div className="gallery-infos-planets">
-                    <p className="gallery-infos-search-txt">
-                        Search result by
-                        <span className="gallery-infos-search-span">&nbsp;"{query}"&nbsp;</span>:
-                    </p>
-                    <Zoom in={true}>
-                        <Grid container spacing={4}>
-                            {planets == undefined ? (
-                                <Skeleton width="100px" />
-                            ) : (
-                                planets.map(planet => (
-                                    <Grid key={planet.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                        <ApeCard planet={planet} compoundDelay={app.compoundDelay * 1} filter="search" />
-                                    </Grid>
-                                ))
-                            )}
-                        </Grid>
-                    </Zoom>
+                    {query && (
+                        <p className="gallery-infos-search-txt">
+                            Search result by
+                            <span className="gallery-infos-search-span">&nbsp;"{query}"&nbsp;</span>:
+                        </p>
+                    )}
+                    <Grid container spacing={4}>
+                        {planets.length == 0 ? (
+                            <>asdfasdf</>
+                        ) : (
+                            planets.map(planet => (
+                                <Grid key={planet.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
+                                    <ApeCard planet={planet} compoundDelay={app.compoundDelay * 1} filter="search" />
+                                </Grid>
+                            ))
+                        )}
+                    </Grid>
                 </div>
             </div>
         </div>
