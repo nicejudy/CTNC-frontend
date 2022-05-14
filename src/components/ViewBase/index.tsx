@@ -6,7 +6,7 @@ import { DRAWER_WIDTH, TRANSITION_DURATION } from "../../constants/style";
 import MobileDrawer from "../Drawer/mobile-drawer";
 import Drawer from "../Drawer";
 // import { cubesImage } from "src/constants/img";
-import cubesImage from "../../assets/icons/curbe.png";
+import cubesImage from "../../assets/icons/nft_large.gif";
 import Messages from "../Messages";
 
 interface IViewBaseProps {

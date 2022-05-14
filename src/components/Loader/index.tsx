@@ -1,6 +1,6 @@
 import React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import GifIcon from "src/assets/icons/nft.gif";
+import GifIcon from "src/assets/icons/nft_small.gif";
 import "./loader.scss";
 
 function Loader() {

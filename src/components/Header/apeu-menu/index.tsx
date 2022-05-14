@@ -13,12 +13,12 @@ function ApeuButton() {
 
     const addresses = getAddresses(Networks.ETH);
 
-    const APEU_ADDRESS = addresses.APEU_ADDRESS;
+    const ACE_ADDRESS = addresses.ACE_ADDRESS;
 
     const isVerySmallScreen = useMediaQuery("(max-width: 500px)");
 
     const buyToken = () => {
-        // window.open(`https://traderjoexyz.com/trade?outputCurrency=${APEU_ADDRESS}`, "_blank");
+        // window.open(`https://traderjoexyz.com/trade?outputCurrency=${ACE_ADDRESS}`, "_blank");
         window.open(``, "_blank");
     };
 
@@ -31,8 +31,8 @@ function ApeuButton() {
                     params: {
                         type: "ERC20",
                         options: {
-                            address: APEU_ADDRESS,
-                            symbol: "MEAT",
+                            address: ACE_ADDRESS,
+                            symbol: "ACE",
                             decimals: TOKEN_DECIMALS,
                             image: `${host}/${WoodIcon}`,
                         },

@@ -106,7 +106,7 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
                     </div>
                 </>
             )}
-            <Link className="card-link" href={`https://testnets.opensea.io/assets/mumbai/${addresses.APEU_MANAGER_ADDRESS}/${planet.id.toString()}`} target="_blank">
+            <Link className="card-link" href={`https://testnets.opensea.io/assets/mumbai/${addresses.NFT_MANAGER}/${planet.id.toString()}`} target="_blank">
                 <p>See on OpenSea</p>
             </Link>
         </div>

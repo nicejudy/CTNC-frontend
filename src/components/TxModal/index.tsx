@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { ReactComponent as XIcon } from "src/assets/icons/x.svg";
-import GifIcon from "src/assets/icons/nft.gif";
+import GifIcon from "src/assets/icons/nft_large.gif";
 import { Box, Modal, Paper, SvgIcon, IconButton, OutlinedInput, InputAdornment, InputLabel, MenuItem, FormHelperText, FormControl, Select } from "@material-ui/core";
 import "./txmodal.scss";
 import { Skeleton } from "@material-ui/lab";

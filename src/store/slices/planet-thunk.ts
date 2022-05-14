@@ -31,7 +31,7 @@ export const createPlanet = createAsyncThunk("mint/createPlanet", async ({ quant
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 
@@ -80,7 +80,7 @@ export const upgradePlanet = createAsyncThunk("mint/upgradePlanet", async ({ id,
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 
@@ -122,7 +122,7 @@ export const transferPlanet = createAsyncThunk("mint/transferPlanet", async ({ t
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 
@@ -162,7 +162,7 @@ export const compoundAll = createAsyncThunk("mint/compoundAll", async ({ provide
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 
@@ -196,7 +196,7 @@ export const claimAll = createAsyncThunk("mint/claimAll", async ({ provider, add
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 
@@ -237,7 +237,7 @@ export const compoundReward = createAsyncThunk("mint/compoundReward", async ({ p
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 
@@ -271,7 +271,7 @@ export const cashoutReward = createAsyncThunk("mint/cashoutReward", async ({ pla
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
 
     let tx;
 

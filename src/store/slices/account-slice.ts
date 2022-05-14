@@ -28,7 +28,7 @@ export const getBalances = createAsyncThunk("account/getBalances", async ({ addr
     const avaxBalance = await provider.getSigner().getBalance();
     const avaxVal = ethers.utils.formatEther(avaxBalance);
 
-    const apeuContract = new ethers.Contract(addresses.APEU_ADDRESS, ApeuContract, provider);
+    const apeuContract = new ethers.Contract(addresses.ACE_ADDRESS, ApeuContract, provider);
 
     // get apeu balance
     const apeuBalance = await apeuContract.balanceOf(address);
@@ -66,15 +66,15 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     const avaxBalance = await provider.getSigner().getBalance();
     const avaxVal = ethers.utils.formatEther(avaxBalance);
 
-    const apeuContract = new ethers.Contract(addresses.APEU_ADDRESS, ApeuContract, provider);
-    const apeuManagerContract = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, provider);
+    const apeuContract = new ethers.Contract(addresses.ACE_ADDRESS, ApeuContract, provider);
+    const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
 
     // get apeu balance
     const apeuBalance = await apeuContract.balanceOf(address);
     const apeuVal = ethers.utils.formatUnits(apeuBalance, "ether");
 
     //get apeu allowance
-    const apeuAllowance = await apeuContract.allowance(address, addresses.APEU_MANAGER_ADDRESS);
+    const apeuAllowance = await apeuContract.allowance(address, addresses.NFT_MANAGER);
     const apeuAll = ethers.utils.formatUnits(apeuAllowance, "ether");
 
     //get planet data

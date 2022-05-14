@@ -89,7 +89,7 @@ function ToolBar({ planets }: IToolBarProps) {
                     <Toolbar disableGutters className="dapp-topbar">
                         <div className="dapp-topbar-btns-wrap">
                             <PlanetButton action="create" planetId="0" actionTime={timestamp} />
-                            {!isSmallScreen && (
+                            {!isSmallScreen && count > 0 && (
                                 <>
                                     {enabledCount == count && <PlanetButton action="compoundall" planetId="0" actionTime={timestamp} />}
                                     {enabledCount == count && <PlanetButton action="claimall" planetId="0" actionTime={timestamp} />}
@@ -97,7 +97,7 @@ function ToolBar({ planets }: IToolBarProps) {
                             )}
                         </div>
                     </Toolbar>
-                    {isSmallScreen && enabledCount == count && (
+                    {isSmallScreen && enabledCount == count && count > 0 && (
                         <Toolbar disableGutters className="dapp-topbar">
                             <div className="dapp-topbar-btns-wrap">
                                 {enabledCount == count && <PlanetButton action="compoundall" planetId="0" actionTime={timestamp} />}

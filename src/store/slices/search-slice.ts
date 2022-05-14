@@ -26,7 +26,7 @@ export interface IPlanetInfoDetails {
 export const loadAccountDetails = async ({ networkID, provider, address }: ILoadAccountDetails) => {
     const addresses = getAddresses(networkID);
 
-    const apeuManagerContract = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, provider);
+    const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
 
     //get planet data
     const planetIds = await apeuManagerContract.getNFTIdsOf(address);
@@ -77,7 +77,7 @@ interface ILoadIdDetails {
 export const loadIdDetails = async ({ networkID, provider, id }: ILoadIdDetails) => {
     const addresses = getAddresses(networkID);
 
-    const apeuManagerContract = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, provider);
+    const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
 
     //get planet data
     const planetData = await apeuManagerContract.getNFTsByIds(id);

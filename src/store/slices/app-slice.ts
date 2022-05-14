@@ -18,8 +18,8 @@ export const loadAppDetails = createAsyncThunk(
     async ({ networkID, provider }: ILoadAppDetails) => {
         const addresses = getAddresses(networkID);
 
-        const apeuContract = new ethers.Contract(addresses.APEU_ADDRESS, ApeuContract, provider);
-        const apeuManagerContract = new ethers.Contract(addresses.APEU_MANAGER_ADDRESS, ApeuManagerContract, provider);
+        const apeuContract = new ethers.Contract(addresses.ACE_ADDRESS, ApeuContract, provider);
+        const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
 
         const marketPrice = await getMarketPrice(networkID, provider);
 
