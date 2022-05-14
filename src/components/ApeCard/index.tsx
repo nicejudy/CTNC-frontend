@@ -69,7 +69,7 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
                 </p>
             )}
             <p className="card-title">
-                Locked Wood: <span className="card-value">{Math.floor(planet.planetValue)}</span>
+                Locked ACE: <span className="card-value">{Math.floor(planet.planetValue)}</span>
             </p>
             <p className="card-title">
                 Pending Rewards: <span className="card-value">{Math.floor(planet.pendingReward)}</span>

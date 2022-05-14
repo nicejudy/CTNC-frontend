@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useWeb3Context } from "../../../hooks";
 import { getAddresses, TOKEN_DECIMALS, Networks } from "../../../constants";
 import CartIcon from "../../../assets/icons/cart.png";
-import WoodIcon from "../../../assets/icons/wood.png";
+import AceIcon from "../../../assets/icons/wood.png";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import "./time-menu.scss";
 
@@ -34,7 +34,7 @@ function ApeuButton() {
                             address: ACE_ADDRESS,
                             symbol: "ACE",
                             decimals: TOKEN_DECIMALS,
-                            image: `${host}/${WoodIcon}`,
+                            image: `${host}/${AceIcon}`,
                         },
                     },
                 });
@@ -53,11 +53,11 @@ function ApeuButton() {
             {providerChainID == Networks.ETH && isConnected && (
                 <>
                     <div className="time-menu-root" onClick={buyToken}>
-                        <div className="time-menu-btn">{!isVerySmallScreen ? <p>Buy Wood</p> : <img alt="" width="20" src={CartIcon} />}</div>
+                        <div className="time-menu-btn">{!isVerySmallScreen ? <p>Buy ACE</p> : <img alt="" width="20" src={CartIcon} />}</div>
                     </div>
                     <div className="time-menu-root" onClick={addToken()}>
-                        <div className="wood-btn">
-                            <img alt="" height="24" src={WoodIcon} />
+                        <div className="ace-btn">
+                            <img alt="" height="24" src={AceIcon} />
                         </div>
                     </div>
                 </>

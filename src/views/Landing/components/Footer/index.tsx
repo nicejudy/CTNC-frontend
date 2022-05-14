@@ -42,7 +42,7 @@ function Footer() {
                         <p className="footer-list-title">City of Mars</p>
                         <ul className="footer-list">
                             <li>Docs</li>
-                            <li>Get Wood</li>
+                            <li>Get ACE</li>
                             <li>Trading Chart</li>
                             <li>Smart Contracts</li>
                             <li>Whitepaper</li>

@@ -113,7 +113,7 @@ function NavContent() {
                     >
                         <div className="dapp-menu-item">
                             {/* <img alt="" src={MintIcon} /> */}
-                            <p>BUY WOOD</p>
+                            <p>BUY ACE</p>
                         </div>
                     </Link>
 
@@ -139,7 +139,7 @@ function NavContent() {
                         className={classnames("button-dapp-menu", { active: isActive })}
                     >
                         <div className="dapp-menu-item">
-                            <p>Wood CHART</p>
+                            <p>ACE CHART</p>
                         </div>
                     </Link>
 

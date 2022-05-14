@@ -25,7 +25,7 @@ function Dashboard() {
                     <Grid container spacing={4}>
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
-                                <p className="card-title">WOOD Price</p>
+                                <p className="card-title">ACE Price</p>
                                 <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 3)}`}</p>
                                 {/* <p className="card-title">${isAppLoading ? <Skeleton width="100px" /> : `${trim(app.marketPrice * app.mimPrice, 2)}`}</p> */}
                             </div>
@@ -34,7 +34,7 @@ function Dashboard() {
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
                                 <p className="card-title">TVL</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(app.totalValueLocked)} WOOD`}</p>
+                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(app.totalValueLocked)} ACE`}</p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (
                                         <Skeleton width="100px" />
@@ -48,7 +48,7 @@ function Dashboard() {
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
                                 <p className="card-title">Total Supply</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(app.totalSupply)} WOOD`}</p>
+                                <p className="card-value">{isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(app.totalSupply)} ACE`}</p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (
                                         <Skeleton width="100px" />
@@ -70,7 +70,7 @@ function Dashboard() {
                             <div className="dashboard-card">
                                 <p className="card-title">Total Reward Per Day</p>
                                 <p className="card-value">
-                                    {isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(app.calculateTotalDailyEmission)} WOOD`}
+                                    {isAppLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(app.calculateTotalDailyEmission)} ACE`}
                                 </p>
                             </div>
                         </Grid> */}
@@ -86,7 +86,7 @@ function Dashboard() {
                             <div className="dashboard-card">
                                 <p className="card-title">My Reward Per Day</p>
                                 <p className="card-value">
-                                    {isAccountLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.estimated))} WOOD`}
+                                    {isAccountLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.estimated))} ACE`}
                                 </p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (
@@ -102,7 +102,7 @@ function Dashboard() {
                             <div className="dashboard-card">
                                 <p className="card-title">My Pending Reward</p>
                                 <p className="card-value">
-                                    {isAccountLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.totalpending))} WOOD`}
+                                    {isAccountLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.totalpending))} ACE`}
                                 </p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (

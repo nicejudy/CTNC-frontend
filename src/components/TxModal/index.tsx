@@ -73,7 +73,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
             dispatch(transferPlanet({ tokenId: planetId, to: name, provider, address, networkID: chainID }));
         };
     } else if (filter == "upgrade") {
-        text1 = "Add Wood";
+        text1 = "Add ACE";
         text2 = "Input New Name";
         titleText = "Stake";
         buttonText = "Stake";
@@ -125,16 +125,16 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                                 <>
                                     {/* <div className="txmodal-header-help-text">
                                         <p>
-                                            Min Value : <span className="txmodal-span">{creationMinPrice}</span> WOOD
+                                            Min Value : <span className="txmodal-span">{creationMinPrice}</span> ACE
                                         </p>
                                     </div>
                                     <div className="txmodal-header-help-text">
                                         <p>
-                                            Balance : <span className="txmodal-span">{Math.floor(parseInt(apeuBalance))}</span> WOOD
+                                            Balance : <span className="txmodal-span">{Math.floor(parseInt(apeuBalance))}</span> ACE
                                         </p>
                                     </div> */}
                                     <div className="txmodal-header-help-text">
-                                        <p>Wood</p>
+                                        <p>ACE</p>
                                     </div>
                                     <OutlinedInput
                                         type="number"
@@ -197,7 +197,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                                 <>
                                     <div className="txmodal-header-help-text">
                                         <p>
-                                            Warning: <span className="txmodal-span">5%</span> of Locked Wood will be burned as fee.
+                                            Warning: <span className="txmodal-span">5%</span> of Locked ACE will be burned as fee.
                                         </p>
                                     </div>
                                 </>
