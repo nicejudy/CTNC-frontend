@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { NavLink, Link as ReactLink } from "react-router-dom";
 import Social from "./social";
 import ZootopiaIcon from "../../../assets/icons/logo.png";
-import TigerImg from "../../../assets/icons/tiger.png";
+import TigerImg from "../../../assets/icons/logo-text-right-white.png";
 import { trim, shorten } from "../../../helpers";
 import { useAddress } from "../../../hooks";
 import { Link } from "@material-ui/core";
@@ -43,11 +43,11 @@ function NavContent() {
                 <div className="nav-title">
                     {/* <img width="200" alt="" src={TextLogoIcon} /> */}
                     <p>
-                        C.T&nbsp;
+                        {/* C.T&nbsp; */}
                         <Link to="/" component={NavLink}>
-                            <img src={TigerImg} />
+                            <img src={TigerImg} width="230" />
                         </Link>
-                        N.C
+                        {/* N.C */}
                     </p>
                 </div>
 

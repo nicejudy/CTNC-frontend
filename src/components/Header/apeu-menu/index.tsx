@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useWeb3Context } from "../../../hooks";
 import { getAddresses, TOKEN_DECIMALS, Networks } from "../../../constants";
 import CartIcon from "../../../assets/icons/cart.png";
-import AceIcon from "../../../assets/icons/wood.png";
+import AceIcon from "../../../assets/icons/token-logo.png";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import "./time-menu.scss";
 
