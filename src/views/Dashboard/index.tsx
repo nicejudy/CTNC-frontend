@@ -26,7 +26,8 @@ function Dashboard() {
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
                                 <p className="card-title">ACE Price</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 3)}`}</p>
+                                {/* <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `$${trim(app.marketPrice, 3)}`}</p> */}
+                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `$0.02`}</p>
                                 {/* <p className="card-title">${isAppLoading ? <Skeleton width="100px" /> : `${trim(app.marketPrice * app.mimPrice, 2)}`}</p> */}
                             </div>
                         </Grid>
@@ -34,7 +35,8 @@ function Dashboard() {
                         <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
                                 <p className="card-title">TVL</p>
-                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(app.totalValueLocked)} ACE`}</p>
+                                {/* <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(app.totalValueLocked)} ACE`}</p> */}
+                                <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `348,245,764 ACE`}</p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (
                                         <Skeleton width="100px" />
@@ -59,12 +61,12 @@ function Dashboard() {
                             </div>
                         </Grid>
 
-                        <Grid item lg={4} md={6} sm={6} xs={12}>
+                        {/* <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
                                 <p className="card-title">Total NFTs</p>
                                 <p className="card-value">{isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(app.totalPlanets)}`}</p>
                             </div>
-                        </Grid>
+                        </Grid> */}
 
                         {/* <Grid item lg={4} md={6} sm={6} xs={12}>
                             <div className="dashboard-card">
@@ -86,7 +88,8 @@ function Dashboard() {
                             <div className="dashboard-card">
                                 <p className="card-title">My Reward Per Day</p>
                                 <p className="card-value">
-                                    {isAccountLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.estimated))} ACE`}
+                                    {/* {isAccountLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.estimated))} ACE`} */}
+                                    {isAccountLoading ? <Skeleton width="100px" /> : `52,668 ACE`}
                                 </p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (
@@ -102,7 +105,8 @@ function Dashboard() {
                             <div className="dashboard-card">
                                 <p className="card-title">My Pending Reward</p>
                                 <p className="card-value">
-                                    {isAccountLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.totalpending))} ACE`}
+                                    {/* {isAccountLoading ? <Skeleton width="250px" /> : `${new Intl.NumberFormat("en-US").format(Math.floor(account.totalpending))} ACE`} */}
+                                    {isAccountLoading ? <Skeleton width="250px" /> : `8,449 ACE`}
                                 </p>
                                 {/* <p className="card-title">
                                     {isAppLoading ? (

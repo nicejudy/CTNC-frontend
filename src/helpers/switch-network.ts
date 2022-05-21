@@ -14,7 +14,7 @@ const addChainRequest = () => {
             {
                 chainId: "0x13881",
                 chainName: "Mumbai Network",
-                rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+                rpcUrls: ["https://matic-mumbai.chainstacklabs.com/"],
                 blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
                 nativeCurrency: {
                     name: "MATIC",

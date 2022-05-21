@@ -1,3 +1,3 @@
 export const getMainnetURI = (): string => {
-    return "https://rpc-mumbai.maticvigil.com";
+    return "https://matic-mumbai.chainstacklabs.com";
 };

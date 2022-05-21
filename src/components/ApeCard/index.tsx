@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "@material-ui/core";
 import { NavLink, Link as ReactLink } from "react-router-dom";
 import { getAddresses, Networks, META_IMAGES, META_JSONS } from "src/constants";
@@ -8,6 +9,7 @@ import "./apecard.scss";
 import { getNFTLevel } from "src/helpers";
 import { IPlanetInfoDetails } from "src/store/slices/account-slice";
 import { useWeb3Context } from "src/hooks";
+import { IReduxState } from "src/store/slices/state.interface";
 import { trim, shorten } from "src/helpers";
 
 interface IApeCardProps {
@@ -18,6 +20,8 @@ interface IApeCardProps {
 
 function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
     const addresses = getAddresses(Networks.ETH);
+
+    const isAccountLoading = useSelector<IReduxState, boolean>(state => state.account.loading);
 
     const { provider, address } = useWeb3Context();
 
@@ -75,7 +79,7 @@ function ApeCard({ planet, compoundDelay, filter }: IApeCardProps) {
                 Pending Rewards: <span className="card-value">{Math.floor(planet.pendingReward)}</span>
             </p>
             <p className="card-title">
-                Daily Profit: <span className="card-value">{Math.round((planet.rewardPerDay / planet.planetValue) * 10000) / 100}</span> %
+                Daily Profit: <span className="card-value">{planet.planetValue == 0 ? 0 : Math.round((planet.rewardPerDay / planet.planetValue) * 10000) / 100}</span> %
             </p>
             {filter != "search" && (
                 <>

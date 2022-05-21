@@ -1,8 +1,8 @@
 {
-  "short_name": "City Of Mars",
+  "short_name": "CTNC",
   "start_url": ".",
   "homepage": "./",
-  "name": "City Of Mars",
+  "name": "Crypto Tiger Node Club",
   "launch_path": "/public/index.html",
   "icons": [
     {
