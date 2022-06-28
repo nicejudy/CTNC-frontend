@@ -32,8 +32,14 @@
           border-color: rgba(255, 255, 255, 0.5) !important;
       }
     }
-    .gallery-infos-planets {
+    .gallery-infos-nfts {
       margin-top: 10px;
+      .gallery-infos-loading{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
       .gallery-infos-search-txt {
         font-family: Montserrat Medium;
         font-style: normal;

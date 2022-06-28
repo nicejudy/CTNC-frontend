@@ -1,3 +1,3 @@
-export { abi as ApeuContract } from "./ApeuContract.json";
-export { abi as ApeuManagerContract } from "./ApeuManagerContract.json";
+export { abi as CmlContract } from "./CmlContract.json";
+export { abi as NftManagerContract } from "./NftManagerContract.json";
 export { abi as LpReserveContract } from "./LpContract.json";

@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
             width: "100%",
             padding: "20px 0 30px 0",
         },
+        paddingTop: "20px",
         justifyContent: "flex-end",
         alignItems: "flex-end",
         background: "transparent",
@@ -29,6 +30,7 @@ const useStyles = makeStyles(theme => ({
             easing: theme.transitions.easing.sharp,
             duration: TRANSITION_DURATION,
         }),
+        // marginTop: "20px",
         marginLeft: DRAWER_WIDTH,
     },
     topBarShift: {

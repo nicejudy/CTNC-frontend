@@ -1,11 +1,9 @@
 import "./tos.scss";
-import Header from "../Landing/components/Header";
-import Footer from "../Landing/components/Footer";
 
 function ToS() {
     return (
         <div className="tos-root">
-            <Header />
+            {/* <Header /> */}
             <div className="tos-view">
                 <div className="tos-main">
                     <div className="tos-main-title-wrap">
@@ -136,7 +134,7 @@ function ToS() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

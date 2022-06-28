@@ -59,6 +59,7 @@
 #hades {
   position: absolute;
   display: flex;
+  z-index: 5 !important;
   justify-content: center;
   align-items: center;
   

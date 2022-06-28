@@ -130,7 +130,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const checkWrongNetwork = async (): Promise<boolean> => {
         if (providerChainID !== DEFAULD_NETWORK) {
             await switchNetwork();
-            window.location.reload();
+            // window.location.reload();
             return true;
         }
 

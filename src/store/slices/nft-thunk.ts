@@ -1,8 +1,8 @@
 import { BigNumber, ethers } from "ethers";
 import axios from "axios";
 import { create as ipfsHttpClient } from "ipfs-http-client";
-import { getAddresses, mintPrice } from "../../constants";
-import { ApeuManagerContract } from "../../abi";
+import { getAddresses } from "../../constants";
+import { NftManagerContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { loadAccountDetails } from "./account-slice";
@@ -16,39 +16,38 @@ import { getGasPrice } from "../../helpers/get-gas-price";
 import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
 import { sleep, getNFTLevel } from "../../helpers";
 
-interface ICreatePlanet {
-    quantity: string;
-    number: string;
+interface ICreateNft {
+    number: number;
     provider: StaticJsonRpcProvider | JsonRpcProvider;
     address: string;
     networkID: Networks;
+    handleClose: () => void;
 }
 
-export const createPlanet = createAsyncThunk("mint/createPlanet", async ({ quantity, number, provider, address, networkID }: ICreatePlanet, { dispatch }) => {
+export const createNft = createAsyncThunk("mint/createNft", async ({ number, provider, address, networkID, handleClose }: ICreateNft, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const nftManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
     try {
         const gasPrice = await getGasPrice(provider);
-        console.log(number);
-        const etherValue = mintPrice * parseInt(number);
+        const mintPrice = Number(await nftManager.mintPrice()) / Math.pow(10, 18);
+        const etherValue = mintPrice * number;
 
-        console.log(etherValue);
-
-        tx = await apeuManager.createNFTWithTokens(number, ethers.utils.parseUnits(quantity, "ether"), {
-            value: ethers.utils.parseEther(etherValue.toString()),
+        tx = await nftManager.createNFT(number, {
+            value: ethers.utils.parseEther(etherValue.toFixed(3)),
             gasPrice: gasPrice,
         });
 
-        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Creating Planet", type: "creating" }));
+        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Creating NFT", type: "creating" }));
         await tx.wait();
+        handleClose();
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err: any) {
         return metamaskErrorWrap(err, dispatch);
@@ -59,38 +58,40 @@ export const createPlanet = createAsyncThunk("mint/createPlanet", async ({ quant
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
 
-interface IUpgradePlanet {
+interface IUpgradeNft {
     id: string;
     quantity: string;
     provider: StaticJsonRpcProvider | JsonRpcProvider;
     address: string;
     networkID: Networks;
+    handleClose: () => void;
 }
 
-export const upgradePlanet = createAsyncThunk("mint/upgradePlanet", async ({ id, quantity, provider, address, networkID }: IUpgradePlanet, { dispatch }) => {
+export const upgradeNft = createAsyncThunk("mint/upgradeNft", async ({ id, quantity, provider, address, networkID, handleClose }: IUpgradeNft, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        tx = await apeuManager.stakeTokensOnNFT(id, ethers.utils.parseUnits(quantity, "ether"), { gasPrice: gasPrice });
+        tx = await apeuManager.stakeTokens(id, ethers.utils.parseUnits(quantity, "ether"), { gasPrice: gasPrice });
 
-        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Updating Planet", type: "updating" }));
+        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Staking NFT", type: "staking" }));
         await tx.wait();
+        handleClose();
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err: any) {
         return metamaskErrorWrap(err, dispatch);
@@ -101,28 +102,29 @@ export const upgradePlanet = createAsyncThunk("mint/upgradePlanet", async ({ id,
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
 
-interface ITransferPlanet {
+interface ITransferNft {
     tokenId: string;
     to: string;
     provider: StaticJsonRpcProvider | JsonRpcProvider;
     address: string;
     networkID: Networks;
+    handleClose: () => void;
 }
 
-export const transferPlanet = createAsyncThunk("mint/transferPlanet", async ({ tokenId, to, provider, address, networkID }: ITransferPlanet, { dispatch }) => {
+export const transferNft = createAsyncThunk("mint/transferNft", async ({ tokenId, to, provider, address, networkID, handleClose }: ITransferNft, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
@@ -131,8 +133,9 @@ export const transferPlanet = createAsyncThunk("mint/transferPlanet", async ({ t
 
         tx = await apeuManager.transferFrom(address, to, tokenId, { gasPrice });
 
-        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Transferring Planet", type: "transferring" }));
+        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Transferring NFT", type: "transferring" }));
         await tx.wait();
+        handleClose();
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err: any) {
         return metamaskErrorWrap(err, dispatch);
@@ -143,8 +146,8 @@ export const transferPlanet = createAsyncThunk("mint/transferPlanet", async ({ t
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -162,7 +165,7 @@ export const compoundAll = createAsyncThunk("mint/compoundAll", async ({ provide
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
@@ -183,8 +186,8 @@ export const compoundAll = createAsyncThunk("mint/compoundAll", async ({ provide
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
@@ -196,7 +199,7 @@ export const claimAll = createAsyncThunk("mint/claimAll", async ({ provider, add
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
@@ -217,36 +220,36 @@ export const claimAll = createAsyncThunk("mint/claimAll", async ({ provider, add
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
 
-interface ICompoundPlanet {
-    planetId: string;
+interface ICompoundNft {
+    nftId: string;
     provider: StaticJsonRpcProvider | JsonRpcProvider;
     address: string;
     networkID: Networks;
 }
 
-export const compoundReward = createAsyncThunk("mint/compoundReward", async ({ planetId, provider, address, networkID }: ICompoundPlanet, { dispatch }) => {
+export const compoundReward = createAsyncThunk("mint/compoundReward", async ({ nftId, provider, address, networkID }: ICompoundNft, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        tx = await apeuManager.compoundReward(planetId, { gasPrice });
+        tx = await apeuManager.compoundReward(nftId, { gasPrice });
 
-        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Compounding Ape", type: "compounding" }));
+        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Compounding NFT", type: "compounding" }));
         await tx.wait();
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err: any) {
@@ -258,29 +261,45 @@ export const compoundReward = createAsyncThunk("mint/compoundReward", async ({ p
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });
 
-export const cashoutReward = createAsyncThunk("mint/cashoutReward", async ({ planetId, provider, address, networkID }: ICompoundPlanet, { dispatch }) => {
+interface ICashoutNft {
+    nftId: string;
+    swapping: number;
+    provider: StaticJsonRpcProvider | JsonRpcProvider;
+    address: string;
+    networkID: Networks;
+}
+
+export const cashoutReward = createAsyncThunk("mint/cashoutReward", async ({ nftId, swapping, provider, address, networkID }: ICashoutNft, { dispatch }) => {
     if (!provider) {
         dispatch(warning({ text: messages.please_connect_wallet }));
         return;
     }
     const addresses = getAddresses(networkID);
     const signer = provider.getSigner();
-    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, signer);
+    const apeuManager = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, signer);
 
     let tx;
 
     try {
         const gasPrice = await getGasPrice(provider);
 
-        tx = await apeuManager.cashoutReward(planetId, { gasPrice });
+        if (swapping == 0) {
+            tx = await apeuManager.cashoutReward(nftId, false, { gasPrice });
+        } else if (swapping == 1) {
+            tx = await apeuManager.cashoutReward(nftId, true, { gasPrice });
+        } else if (swapping == 2) {
+            tx = await apeuManager.cashoutRewardFromSupports(nftId, true, { gasPrice });
+        } else {
+            return;
+        }
 
-        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Claiming Ape", type: "claiming" }));
+        dispatch(fetchPendingTxns({ txnHash: tx.hash, text: "Claiming NFT", type: "claiming" }));
         await tx.wait();
         dispatch(success({ text: messages.tx_successfully_send }));
     } catch (err: any) {
@@ -292,8 +311,8 @@ export const cashoutReward = createAsyncThunk("mint/cashoutReward", async ({ pla
     }
     await sleep(2);
     dispatch(info({ text: messages.your_data_update_soon }));
-    await dispatch(loadAccountDetails({ networkID, provider, address }));
-    await dispatch(loadAppDetails({ networkID, provider }));
+    await dispatch(loadAccountDetails({ networkID, provider, address, loading: false }));
+    await dispatch(loadAppDetails({ networkID, provider, loading: false }));
     dispatch(info({ text: messages.your_data_updated }));
     return;
 });

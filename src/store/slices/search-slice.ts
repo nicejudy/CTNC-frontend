@@ -1,9 +1,10 @@
 import { ethers } from "ethers";
 import { getAddresses } from "../../constants";
-import { ApeuContract, ApeuManagerContract } from "../../abi";
+import { CmlContract, NftManagerContract } from "../../abi";
 
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { Networks } from "../../constants/blockchain";
+import { IUserInfoDetails } from "./account-slice";
 
 interface ILoadAccountDetails {
     address: string;
@@ -11,60 +12,68 @@ interface ILoadAccountDetails {
     provider: StaticJsonRpcProvider | JsonRpcProvider;
 }
 
-export interface IPlanetInfoDetails {
+export interface INftInfoDetails {
     id: number;
     owner: string;
-    creationTime: number;
     lastProcessingTimestamp: number;
-    planetValue: number;
+    amount: number;
+    supportValue: number;
+    supporters: IUserInfoDetails[];
+    rewardPerDay: number;
     totalClaimed: number;
     exists: boolean;
-    pendingReward: number;
-    rewardPerDay: number;
 }
 
 export const loadAccountDetails = async ({ networkID, provider, address }: ILoadAccountDetails) => {
     const addresses = getAddresses(networkID);
 
-    const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
+    const nftManagerContract = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, provider);
 
-    //get planet data
-    const planetIds = await apeuManagerContract.getNFTIdsOf(address);
-    const planetData = await apeuManagerContract.getNFTsByIds(planetIds);
+    const nftIds = await nftManagerContract.getOwnedNFTIdsOf(address);
+    const nftData = await nftManagerContract.getNFTsByIds(nftIds);
 
-    const planetCount = planetData.length;
+    const nftCount = nftData.length;
 
-    let planetInfoData = [];
-    let estimatedPerDay = 0;
-    let totalPendingReward = 0;
+    let nftInfoData = [];
 
-    for (let i = 0; i < planetCount; i++) {
-        const planet: IPlanetInfoDetails = {
-            id: Number(planetData[i][1]),
-            owner: address,
-            creationTime: Number(planetData[i][0][1]),
-            lastProcessingTimestamp: Number(planetData[i][0][2]),
-            planetValue: Number(planetData[i][0][3]) / Math.pow(10, 18),
-            totalClaimed: Number(planetData[i][0][4]) / Math.pow(10, 18),
-            exists: Boolean(planetData[i][0][5]),
-            pendingReward: Number(planetData[i][2]) / Math.pow(10, 18),
-            rewardPerDay: Number(planetData[i][3]) / Math.pow(10, 18),
+    for (let i = 0; i < nftCount; i++) {
+        const users = await nftManagerContract.getUsersOf(nftData[i][0]);
+        const userCount = users.length;
+
+        let supporters = [];
+
+        for (let j = 0; j < userCount; j++) {
+            const userData = await nftManagerContract.userInfo(nftData[i][0], users[j]);
+            const supporter: IUserInfoDetails = {
+                address: users[j],
+                nftId: Number(nftData[i][0]),
+                lastProcessingTimestamp: Number(userData[0]),
+                amount: Number(userData[1]),
+                totalClaimed: Number(userData[2]),
+                rewardPerDay: Number(await nftManagerContract.calculateRewardsPerDay(userData[1])),
+            };
+
+            supporters[j] = supporter;
+        }
+
+        const nft: INftInfoDetails = {
+            id: Number(nftData[i][0]),
+            owner: await nftManagerContract.ownerOf(nftData[i][0]),
+            lastProcessingTimestamp: Number(nftData[i][1][1]),
+            amount: Number(nftData[i][1][2]) / Math.pow(10, 18),
+            supportValue: Number(nftData[i][1][3]) / Math.pow(10, 18),
+            supporters: supporters,
+            totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
+            exists: Boolean(nftData[i][1][5]),
+            rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
         };
 
-        estimatedPerDay += Number(planetData[i][3]);
-        totalPendingReward += Number(planetData[i][2]);
-
-        planetInfoData[i] = planet;
+        nftInfoData[i] = nft;
     }
 
-    const estimatedPerDayValue = estimatedPerDay / Math.pow(10, 18);
-    const totalPendingRewardValue = totalPendingReward / Math.pow(10, 18);
-
     return {
-        planets: planetInfoData,
-        number: planetCount,
-        estimated: estimatedPerDayValue,
-        totalpending: totalPendingRewardValue,
+        nfts: nftInfoData,
+        number: nftCount,
     };
 };
 
@@ -77,33 +86,50 @@ interface ILoadIdDetails {
 export const loadIdDetails = async ({ networkID, provider, id }: ILoadIdDetails) => {
     const addresses = getAddresses(networkID);
 
-    const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
+    const nftManagerContract = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, provider);
+    const nftData = await nftManagerContract.getNFTsByIds(id);
 
-    //get planet data
-    const planetData = await apeuManagerContract.getNFTsByIds(id);
+    const nftCount = nftData.length;
 
-    const planetCount = planetData.length;
+    let nftInfoData = [];
 
-    let planetInfoData = [];
+    for (let i = 0; i < nftCount; i++) {
+        const users = await nftManagerContract.getUsersOf(nftData[i][0]);
+        const userCount = users.length;
 
-    for (let i = 0; i < planetCount; i++) {
-        const planet: IPlanetInfoDetails = {
-            id: Number(planetData[i][1]),
-            owner: await apeuManagerContract.ownerOf(Number(planetData[i][1])),
-            creationTime: Number(planetData[i][0][1]),
-            lastProcessingTimestamp: Number(planetData[i][0][2]),
-            planetValue: Number(planetData[i][0][3]) / Math.pow(10, 18),
-            totalClaimed: Number(planetData[i][0][4]) / Math.pow(10, 18),
-            exists: Boolean(planetData[i][0][5]),
-            pendingReward: Number(planetData[i][2]) / Math.pow(10, 18),
-            rewardPerDay: Number(planetData[i][3]) / Math.pow(10, 18),
+        let supporters = [];
+
+        for (let j = 0; j < userCount; j++) {
+            const userData = await nftManagerContract.userInfo(nftData[i][0], users[j]);
+            const supporter: IUserInfoDetails = {
+                address: users[j],
+                nftId: Number(nftData[i][0]),
+                lastProcessingTimestamp: Number(userData[0]),
+                amount: Number(userData[1]),
+                totalClaimed: Number(userData[2]),
+                rewardPerDay: Number(await nftManagerContract.calculateRewardsPerDay(userData[1])),
+            };
+
+            supporters[j] = supporter;
+        }
+
+        const nft: INftInfoDetails = {
+            id: Number(nftData[i][0]),
+            owner: await nftManagerContract.ownerOf(nftData[i][0]),
+            lastProcessingTimestamp: Number(nftData[i][1][1]),
+            amount: Number(nftData[i][1][2]) / Math.pow(10, 18),
+            supportValue: Number(nftData[i][1][3]) / Math.pow(10, 18),
+            supporters: supporters,
+            totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
+            exists: Boolean(nftData[i][1][5]),
+            rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
         };
 
-        planetInfoData[i] = planet;
+        nftInfoData[i] = nft;
     }
 
     return {
-        planets: planetInfoData,
-        number: planetCount,
+        nfts: nftInfoData,
+        number: nftCount,
     };
 };

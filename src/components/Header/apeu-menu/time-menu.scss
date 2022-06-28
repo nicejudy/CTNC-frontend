@@ -1,19 +1,31 @@
 .time-menu-root{
   .time-menu-btn{
-    padding: 9px 20px;
-    background: rgba(70, 70, 140, 0.5);
+    padding: 11px 40px;
+    // background: rgba(70, 70, 140, 0.5);
+    border: 2px solid #faa046;
     box-shadow: 0px 0px 10px rgba(44, 39, 109, 0.1);
     border-radius: 10px;
     cursor: pointer;
     margin-right: 20px;
 
+    .time-menu-wrap{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &:hover{
+      background-color: #faa046;
+    }
+
     p{
       font-family: Montserrat SemiBold;
       font-weight: 600;
-      font-size: 18px;
+      font-size: 16px;
       color: #FFFFFF;
     }
   }
+
   .ace-btn{
     padding: 4px 14px;
     background: rgba(70, 70, 140, 0.5);
@@ -32,14 +44,14 @@
   }
 }
 
-.time-menu-popper{
+.time-menu-poper{
   margin-top: 10px;
 
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(100px);
-  }
-
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(100px);
+    }
+  
   /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
   @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
       background: #181B1C;
@@ -47,59 +59,32 @@
 
   border-radius: 10px;
   overflow: hidden;
-  z-index: 10;
+  z-index: 3000;
 
   .tooltip{
-    display: flex;
-    flex-direction: column;
-
-    .tooltip-item{
-      text-decoration: none;
-      padding: 13px 20px;
-      cursor: pointer;
-
-      &:hover{
-          background: rgba(255,255,255,0.1);
-          text-decoration: none;
-      }
-
-      &:active{
-          background: rgba(255,255,255,0.1);
-          text-decoration: none;
-      }
-
-      p{
-          font-family: Montserrat SemiBold;
-          font-style: normal;
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 20px;
-          color: #FFFFFF;
-          text-align: center;
-          text-decoration: none;
-      }
-    }
-
-    .add-tokens{
       display: flex;
       flex-direction: column;
+      
+      .tooltip-item{
+          padding: 13px 20px;
+          align-items: center;
+          display: flex;
+          cursor: pointer;
 
-      .add-tokens-title{
-        font-family: Montserrat SemiBold;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
-        color: #FFFFFF;
-        text-align: center;
+          &:hover{
+              background: #faa046;
+              text-decoration: none;
+          }
 
-        margin: 5px 0px;
+          p{
+              margin-left: 10px;
+              font-family: Montserrat SemiBold;
+              font-style: normal;
+              font-weight: 600;
+              font-size: 16px;
+              line-height: 20px;
+              color: #FFFFFF;
+          }
       }
-    }
-
-    .divider{
-      height: 1px;
-      background: #FFFFFF;
-      border: none;
-    }
   }
 }

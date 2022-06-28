@@ -20,10 +20,16 @@
     border-radius: 10px;
     padding: 26px 0;
 
+    .owner-badge{
+      position: fixed;
+      right: 39px;
+      top: 39px;
+    }
+
     .card-title {
       font-family: Montserrat Medium;
       font-weight: 500;
-      font-size: 16px;
+      font-size: 14px;
       color: rgba(255, 255, 255, 0.6);
       text-align: center;
       .MuiTypography-colorPrimary {
@@ -31,7 +37,7 @@
       }
     }
 
-    .card-link {
+    .card-opensea-link {
       font-family: Montserrat Medium;
       font-weight: 500;
       font-size: 16px;
@@ -46,8 +52,12 @@
         font-size: 16px;
         color: rgba(255, 255, 255, 1);
       }
-    
-    .card-name {
+
+    .card-name-wrap{
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      .card-name-text {
         font-family: Montserrat Medium;
         font-weight: 500;
         font-size: 24px;
@@ -55,6 +65,26 @@
         color: rgba(255, 255, 255, 1);
         text-align: left;
       }
+      .card-copylink{
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+        position: fixed;
+        right: 20px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #ffffff55;
+        // top: 39px;
+        &:hover{
+          background-color: #ffffff33;
+        }
+        &:active{
+          background-color: #ffffff11;
+        }
+      }
+    }
+    
+    
 
     .dapp-topbar-btns-wrap{
         display: flex;
@@ -79,7 +109,7 @@
     .card-value {
       font-family: Montserrat Bold;
     //   font-weight: bold;
-      font-size: 20px;
+      font-size: 14px;
       color: #FFFFFF;
       padding-bottom: 20px !important; 
     }

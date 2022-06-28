@@ -36,24 +36,17 @@ function NavContent() {
     return (
         <div className="dapp-sidebar">
             <div className="branding-header">
-                {/* <Link to="/" component={NavLink}>
-                    <img width="150" alt="" src={ZootopiaIcon} />
-                </Link> */}
-
                 <div className="nav-title">
-                    {/* <img width="200" alt="" src={TextLogoIcon} /> */}
                     <p>
-                        {/* C.T&nbsp; */}
                         <Link to="/" component={NavLink}>
                             <img src={TigerImg} width="200" />
                         </Link>
-                        {/* N.C */}
                     </p>
                 </div>
 
                 {address && (
                     <div className="wallet-link">
-                        <Link href={`https://etherscan.io/address/${address}`} target="_blank">
+                        <Link href={`https://rinkeby.etherscan.io/address/${address}`} target="_blank">
                             <p>{shorten(address)}</p>
                         </Link>
                     </div>
@@ -113,7 +106,7 @@ function NavContent() {
                     >
                         <div className="dapp-menu-item">
                             {/* <img alt="" src={MintIcon} /> */}
-                            <p>BUY ACE</p>
+                            <p>BUY $CML</p>
                         </div>
                     </Link>
 
@@ -139,7 +132,7 @@ function NavContent() {
                         className={classnames("button-dapp-menu", { active: isActive })}
                     >
                         <div className="dapp-menu-item">
-                            <p>ACE CHART</p>
+                            <p>$CML CHART</p>
                         </div>
                     </Link>
 

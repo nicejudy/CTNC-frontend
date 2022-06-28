@@ -3,13 +3,13 @@ import { Grid, Zoom } from "@material-ui/core";
 import "./mint.scss";
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
-import { IPlanetInfoDetails } from "../../store/slices/account-slice";
+import { INftInfoDetails } from "../../store/slices/account-slice";
 import ToolBar from "src/components/ToolBar";
 import ApeCard from "src/components/ApeCard";
 
 function Mint() {
-    const planets = useSelector<IReduxState, IPlanetInfoDetails[]>(state => {
-        return state.account.planets;
+    const nfts = useSelector<IReduxState, INftInfoDetails[]>(state => {
+        return state.account.nft;
     });
 
     const compoundDelay = useSelector<IReduxState, number>(state => {
@@ -18,17 +18,17 @@ function Mint() {
 
     return (
         <>
-            {planets == undefined ? <></> : <ToolBar planets={planets} />}
+            {nfts == undefined ? <></> : <ToolBar nfts={nfts} />}
             <div className="mint-view">
                 <div className="mint-infos-wrap">
                     <Zoom in={true}>
                         <Grid container spacing={4}>
-                            {planets == undefined ? (
+                            {nfts == undefined ? (
                                 <Skeleton width="100px" />
                             ) : (
-                                planets.map(planet => (
-                                    <Grid item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                        <ApeCard planet={planet} compoundDelay={compoundDelay * 1} filter="" />
+                                nfts.map(nft => (
+                                    <Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
+                                        <ApeCard nft={nft} compoundDelay={compoundDelay * 1} filter="" />
                                     </Grid>
                                 ))
                             )}

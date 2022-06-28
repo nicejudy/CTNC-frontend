@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Grid, Zoom, TextField, OutlinedInput } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import "./find.scss";
 import Cookies from "universal-cookie";
 import { IReduxState } from "src/store/slices/state.interface";
 import { IAppSlice } from "src/store/slices/app-slice";
-import { IPlanetInfoDetails } from "src/store/slices/account-slice";
+import { INftInfoDetails } from "src/store/slices/account-slice";
 import { loadAccountDetails, loadIdDetails } from "src/store/slices/search-slice";
 import ApeCard from "src/components/ApeCard";
 import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
@@ -16,6 +17,8 @@ function Find() {
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
     const app = useSelector<IReduxState, IAppSlice>(state => state.app);
 
+    const [loading, setLoading] = useState<boolean>(false);
+
     const provider = new StaticJsonRpcProvider(getMainnetURI());
     const chainID = DEFAULD_NETWORK;
 
@@ -24,28 +27,31 @@ function Find() {
     const id = cookies.get("id");
     cookies.remove("id");
 
-    const [planets, setPlanets] = useState<IPlanetInfoDetails[]>([]);
+    const [nfts, setNfts] = useState<INftInfoDetails[]>([]);
 
     const searchID = async (name: string[]) => {
+        setLoading(true);
         const data = await loadIdDetails({ networkID: chainID, provider, id: name });
-        setPlanets(data.planets);
+        setNfts(data.nfts);
+        setLoading(false);
     };
 
     if (id != "") {
-        if (parseInt(id) > 0 && parseInt(id) <= app.totalPlanets * 1) searchID([id]);
+        if (parseInt(id) > 0 && parseInt(id) <= app.nftMintedSupply * 1) searchID([id]);
     }
 
     return (
         <div className="find-view">
             <div className="find-infos-wrap">
-                <div className="find-infos-planets">
+                <div className="find-infos-nfts">
+                    {loading && <div className="find-infos-loading"><CircularProgress color="secondary" size={80} /></div>}
                     <Grid container spacing={4}>
-                        {planets.length == 0 ? (
+                        {nfts.length == 0 ? (
                             <></>
                         ) : (
-                            planets.map(planet => (
-                                <Grid key={planet.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                    <ApeCard planet={planet} compoundDelay={app.compoundDelay * 1} filter="search" />
+                            nfts.map(nft => (
+                                <Grid key={nft.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
+                                    <ApeCard nft={nft} compoundDelay={app.compoundDelay * 1} filter="search" />
                                 </Grid>
                             ))
                         )}

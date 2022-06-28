@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
 import axios from "axios";
 import { getAddresses } from "../../constants";
-import { ApeuContract, ApeuManagerContract } from "../../abi";
+import { CmlContract, NftManagerContract } from "../../abi";
 import { setAll } from "../../helpers";
 
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "../../constants/blockchain";
+import { Networks, USDC_DECIMALS } from "../../constants/blockchain";
 import { RootState } from "../store";
 
 interface IGetBalances {
@@ -17,27 +17,27 @@ interface IGetBalances {
 
 interface IAccountBalances {
     balances: {
-        avax: string;
-        apeu: string;
+        eth: string;
+        usdt: string;
+        cml: string;
     };
 }
 
 export const getBalances = createAsyncThunk("account/getBalances", async ({ address, networkID, provider }: IGetBalances): Promise<IAccountBalances> => {
     const addresses = getAddresses(networkID);
 
-    const avaxBalance = await provider.getSigner().getBalance();
-    const avaxVal = ethers.utils.formatEther(avaxBalance);
+    const usdtContact = new ethers.Contract(addresses.USDT_ADDRESS, CmlContract, provider);
+    const cmlContact = new ethers.Contract(addresses.CML_ADDRESS, CmlContract, provider);
 
-    const apeuContract = new ethers.Contract(addresses.ACE_ADDRESS, ApeuContract, provider);
-
-    // get apeu balance
-    const apeuBalance = await apeuContract.balanceOf(address);
-    const apeuVal = ethers.utils.formatUnits(apeuBalance, "ether");
+    const ethBalance = ethers.utils.formatEther(await provider.getSigner().getBalance());
+    const usdtBalance = ethers.utils.formatUnits(await usdtContact.balanceOf(address), "ether");
+    const cmlBalance = ethers.utils.formatUnits(await cmlContact.balanceOf(address), "ether");
 
     return {
         balances: {
-            avax: avaxVal,
-            apeu: apeuVal,
+            eth: ethBalance,
+            usdt: usdtBalance,
+            cml: cmlBalance,
         },
     };
 });
@@ -46,97 +46,151 @@ interface ILoadAccountDetails {
     address: string;
     networkID: Networks;
     provider: StaticJsonRpcProvider | JsonRpcProvider;
+    loading: boolean;
 }
 
-export interface IPlanetInfoDetails {
-    id: number;
-    owner: string;
-    creationTime: number;
+export interface IUserInfoDetails {
+    address: string;
+    nftId: number;
     lastProcessingTimestamp: number;
-    planetValue: number;
+    amount: number;
     totalClaimed: number;
-    exists: boolean;
-    pendingReward: number;
     rewardPerDay: number;
 }
 
-export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address }: ILoadAccountDetails) => {
-    const addresses = getAddresses(networkID);
+export interface INftInfoDetails {
+    id: number;
+    owner: string;
+    lastProcessingTimestamp: number;
+    amount: number;
+    supportValue: number;
+    supporters: IUserInfoDetails[];
+    rewardPerDay: number;
+    totalClaimed: number;
+    exists: boolean;
+}
 
-    const avaxBalance = await provider.getSigner().getBalance();
-    const avaxVal = ethers.utils.formatEther(avaxBalance);
-
-    const apeuContract = new ethers.Contract(addresses.ACE_ADDRESS, ApeuContract, provider);
-    const apeuManagerContract = new ethers.Contract(addresses.NFT_MANAGER, ApeuManagerContract, provider);
-
-    // get apeu balance
-    const apeuBalance = await apeuContract.balanceOf(address);
-    const apeuVal = ethers.utils.formatUnits(apeuBalance, "ether");
-
-    //get apeu allowance
-    const apeuAllowance = await apeuContract.allowance(address, addresses.NFT_MANAGER);
-    const apeuAll = ethers.utils.formatUnits(apeuAllowance, "ether");
-
-    //get planet data
-    const planetIds = await apeuManagerContract.getNFTIdsOf(address);
-    const planetData = await apeuManagerContract.getNFTsByIds(planetIds);
-
-    const planetCount = planetData.length;
-
-    let planetInfoData = [];
-    let estimatedPerDay = 0;
-    let totalPendingReward = 0;
-
-    for (let i = 0; i < planetCount; i++) {
-        const planet: IPlanetInfoDetails = {
-            id: Number(planetData[i][1]),
-            owner: address,
-            creationTime: Number(planetData[i][0][1]),
-            lastProcessingTimestamp: Number(planetData[i][0][2]),
-            planetValue: Number(planetData[i][0][3]) / Math.pow(10, 18),
-            totalClaimed: Number(planetData[i][0][4]) / Math.pow(10, 18),
-            exists: Boolean(planetData[i][0][5]),
-            pendingReward: Number(planetData[i][2]) / Math.pow(10, 18),
-            rewardPerDay: Number(planetData[i][3]) / Math.pow(10, 18),
-        };
-
-        estimatedPerDay += Number(planetData[i][3]);
-        totalPendingReward += Number(planetData[i][2]);
-
-        planetInfoData[i] = planet;
-    }
-
-    const estimatedPerDayValue = estimatedPerDay / Math.pow(10, 18);
-    const totalPendingRewardValue = totalPendingReward / Math.pow(10, 18);
-
-    return {
-        balances: {
-            avax: avaxVal,
-            apeu: apeuVal,
-            allowance: apeuAll,
-        },
-        planets: planetInfoData,
-        number: planetCount,
-        estimated: estimatedPerDayValue,
-        totalpending: totalPendingRewardValue,
-    };
-});
-
-const initialState = {
+let initialState = {
     loading: true,
 };
+
+export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address, loading }: ILoadAccountDetails) => {
+    // initialState.loading = loading;
+    const addresses = getAddresses(networkID);
+
+    const usdtContact = new ethers.Contract(addresses.USDT_ADDRESS, CmlContract, provider);
+    const cmlContact = new ethers.Contract(addresses.CML_ADDRESS, CmlContract, provider);
+    const nftManagerContract = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, provider);
+
+    const ethBalance = ethers.utils.formatEther(await provider.getSigner().getBalance());
+    const usdtBalance = await usdtContact.balanceOf(address) / 10**USDC_DECIMALS;
+    const cmlBalance = ethers.utils.formatUnits(await cmlContact.balanceOf(address), "ether");
+
+    const ownedNfts = await nftManagerContract.getOwnedNFTIdsOf(address);
+    const supportedNfts = await nftManagerContract.getAvailableNFTIdsOf(address);
+
+    let addedNfts = ownedNfts.concat(supportedNfts);
+    let duplicate = [];
+    for (let i = 0; i < addedNfts.length; i++) {
+        for (let j = i + 1; j < addedNfts.length; j++) {
+            if (addedNfts[i]*1 == addedNfts[j]*1) {
+                duplicate.push(j);
+            }
+        }
+    }
+    duplicate.sort();
+    for (let i = 0; i < duplicate.length; i++) {
+        addedNfts.splice(duplicate[duplicate.length-i-1], 1);
+    }
+
+    const nftData = await nftManagerContract.getNFTsByIds(addedNfts);
+
+    const nftCount = nftData.length;
+
+    let nftInfoData = [];
+    let totalLockedAmount = 0;
+    let totalSupportValue = 0;
+    let totalClaimed = 0;
+
+    for (let i = 0; i < nftCount; i++) {
+        const users = await nftManagerContract.getUsersOf(nftData[i][0]);
+        const userCount = users.length;
+
+        let supporters = [];
+
+        for (let j = 0; j < userCount; j++) {
+            const userData = await nftManagerContract.userInfo(nftData[i][0], users[j]);
+            const supporter: IUserInfoDetails = {
+                address: users[j],
+                nftId: Number(nftData[i][0]),
+                lastProcessingTimestamp: Number(userData[0]),
+                amount: Number(userData[1]),
+                totalClaimed: Number(userData[2]),
+                rewardPerDay: Number(await nftManagerContract.calculateRewardsPerDay(userData[1])),
+            };
+
+            supporters[j] = supporter;
+        }
+
+        const nft: INftInfoDetails = {
+            id: Number(nftData[i][0]),
+            owner: await nftManagerContract.ownerOf(nftData[i][0]),
+            lastProcessingTimestamp: Number(nftData[i][1][1]),
+            amount: Number(nftData[i][1][2]) / Math.pow(10, 18),
+            supportValue: Number(nftData[i][1][3]) / Math.pow(10, 18),
+            supporters: supporters,
+            totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
+            exists: Boolean(nftData[i][1][5]),
+            rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
+        };
+
+        nftInfoData[i] = nft;
+
+        const myInfo = await nftManagerContract.userInfo(nftData[i][0], address);
+
+        totalClaimed += Number(myInfo[2]) / Math.pow(10, 18);
+        totalLockedAmount += Number(myInfo[1]) / Math.pow(10, 18);
+
+        if (await nftManagerContract.isOwnerOfNFT(address, nftData[i][0])) {
+            totalSupportValue += Number(nftData[i][1][3]) / Math.pow(10, 18);
+        }
+    }
+
+    const totalAmountForRewards = totalClaimed + totalLockedAmount;
+
+    const totalRewardsPerDay = Number(await nftManagerContract.calculateRewardsPerDay(ethers.utils.parseUnits(totalAmountForRewards.toString(), "ether"))) / Math.pow(10, 18);
+
+    return {
+        loading,
+        balances: {
+            eth: ethBalance,
+            usdt: usdtBalance,
+            cml: cmlBalance,
+        },
+        ownedNumber: ownedNfts.length,
+        availableNumber: addedNfts.length - ownedNfts.length,
+        nft: nftInfoData,
+        totalLockedAmount: totalLockedAmount,
+        totalSupportValue: totalSupportValue,
+        totalClaimed: totalClaimed,
+        totalRewardsPerDay: totalRewardsPerDay,
+    };
+});
 
 export interface IAccountSlice {
     loading: boolean;
     balances: {
-        avax: string;
-        apeu: string;
-        allowance: string;
+        eth: string;
+        usdt: string;
+        cml: string;
     };
-    planets: IPlanetInfoDetails[];
-    number: number;
-    estimated: number;
-    totalpending: number;
+    ownedNumber: number;
+    availableNumber: number;
+    nft: INftInfoDetails[];
+    totalLockedAmount: number;
+    totalSupportValue: number;
+    totalClaimed: number;
+    totalRewardsPerDay: number;
 }
 
 const accountSlice = createSlice({
@@ -150,7 +204,7 @@ const accountSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(loadAccountDetails.pending, state => {
-                state.loading = true;
+                state.loading = state.loading;
             })
             .addCase(loadAccountDetails.fulfilled, (state, action) => {
                 setAll(state, action.payload);

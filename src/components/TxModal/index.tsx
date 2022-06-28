@@ -4,16 +4,17 @@ import GifIcon from "src/assets/icons/nft_large.gif";
 import { Box, Modal, Paper, SvgIcon, IconButton, OutlinedInput, InputAdornment, InputLabel, MenuItem, FormHelperText, FormControl, Select } from "@material-ui/core";
 import "./txmodal.scss";
 import { Skeleton } from "@material-ui/lab";
+import ConnectMenu from "src/components/Header/connect-button";
 import { shorten, sleep, trim } from "src/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { IReduxState } from "src/store/slices/state.interface";
-import { createPlanet, transferPlanet, upgradePlanet } from "src/store/slices/planet-thunk";
+import { createNft, transferNft, upgradeNft } from "src/store/slices/nft-thunk";
 import { IPendingTxn, isPendingTxn, txnButtonText } from "src/store/slices/pending-txns-slice";
-import { IPlanetInfoDetails } from "src/store/slices/account-slice";
+import { INftInfoDetails } from "src/store/slices/account-slice";
 import { useWeb3Context } from "src/hooks";
 import { warning } from "src/store/slices/messages-slice";
 import { messages } from "src/constants/messages";
-import { META_IMAGES } from "src/constants";
+import { META_IMAGES, DEFAULD_NETWORK } from "src/constants";
 import { utils } from "ethers";
 import { String } from "lodash";
 
@@ -21,11 +22,11 @@ interface ITxProps {
     open: boolean;
     handleClose: () => void;
     filter: string;
-    planetId: string;
+    nftId: string;
 }
 
-function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
-    const { provider, address, chainID, checkWrongNetwork } = useWeb3Context();
+function TxModal({ open, handleClose, filter, nftId }: ITxProps) {
+    const { provider, address, chainID, providerChainID, checkWrongNetwork } = useWeb3Context();
     const dispatch = useDispatch();
 
     const pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {
@@ -33,7 +34,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
     });
 
     const creationMinPrice = useSelector<IReduxState, string>(state => {
-        return state.app.creationMinPrice;
+        return state.app.stakeMinValue;
     });
 
     const compoundDelay = useSelector<IReduxState, number>(state => {
@@ -41,7 +42,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
     });
 
     const apeuBalance = useSelector<IReduxState, string>(state => {
-        return state.account.balances && state.account.balances.apeu;
+        return state.account.balances && state.account.balances.cml;
     });
 
     const [quantity, setQuantity] = useState<string>("");
@@ -61,7 +62,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
         buttonText = "Create";
         onMint = async () => {
             if (await checkWrongNetwork()) return;
-            dispatch(createPlanet({ quantity, number, provider, address, networkID: chainID }));
+            dispatch(createNft({ number: parseInt(number), provider, address, networkID: chainID, handleClose }));
         };
     } else if (filter == "transfer") {
         text1 = "Address";
@@ -70,16 +71,16 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
         buttonText = "Transfer";
         onMint = async () => {
             if (await checkWrongNetwork()) return;
-            dispatch(transferPlanet({ tokenId: planetId, to: name, provider, address, networkID: chainID }));
+            dispatch(transferNft({ tokenId: nftId, to: name, provider, address, networkID: chainID, handleClose }));
         };
     } else if (filter == "upgrade") {
-        text1 = "Add ACE";
+        text1 = "$CML";
         text2 = "Input New Name";
         titleText = "Stake";
         buttonText = "Stake";
         onMint = async () => {
             if (await checkWrongNetwork()) return;
-            dispatch(upgradePlanet({ id: planetId, quantity, provider, address, networkID: chainID }));
+            dispatch(upgradeNft({ id: nftId, quantity, provider, address, networkID: chainID, handleClose }));
         };
     }
 
@@ -88,7 +89,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
     };
 
     const setMaxNumber = () => {
-        setNumber("99");
+        setNumber("10");
     };
 
     return (
@@ -102,7 +103,8 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                         <SvgIcon color="primary" component={XIcon} />
                     </IconButton>
                 </div>
-                <Box className="card-content">
+                {(!address || DEFAULD_NETWORK != providerChainID) && <div className="txmodal-wallet"><ConnectMenu /></div>}
+                {(address && DEFAULD_NETWORK == providerChainID) && <Box className="card-content">
                     <div className="txmodal-header">
                         <div className="txmodal-header-token-select-wrap">
                             {filter == "create" && <img className="txmodal-header-img" src={GifIcon} />}
@@ -123,34 +125,6 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                             )}
                             {filter == "create" && (
                                 <>
-                                    {/* <div className="txmodal-header-help-text">
-                                        <p>
-                                            Min Value : <span className="txmodal-span">{creationMinPrice}</span> ACE
-                                        </p>
-                                    </div>
-                                    <div className="txmodal-header-help-text">
-                                        <p>
-                                            Balance : <span className="txmodal-span">{Math.floor(parseInt(apeuBalance))}</span> ACE
-                                        </p>
-                                    </div> */}
-                                    <div className="txmodal-header-help-text">
-                                        <p>ACE</p>
-                                    </div>
-                                    <OutlinedInput
-                                        type="number"
-                                        placeholder={new Intl.NumberFormat("en-US").format(parseInt(creationMinPrice))}
-                                        className="txmodal-header-token-select-input"
-                                        value={quantity}
-                                        onChange={e => setQuantity(e.target.value)}
-                                        labelWidth={0}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <div className="txmodal-header-token-select-input-btn" onClick={setMaxQuantity}>
-                                                    <p>Max</p>
-                                                </div>
-                                            </InputAdornment>
-                                        }
-                                    />
                                     <div className="txmodal-header-help-text">
                                         <p>Amount</p>
                                     </div>
@@ -197,7 +171,7 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                                 <>
                                     <div className="txmodal-header-help-text">
                                         <p>
-                                            Warning: <span className="txmodal-span">5%</span> of Locked ACE will be burned as fee.
+                                            Warning: <span className="txmodal-span">5%</span> of Locked $CML will be burned as fee.
                                         </p>
                                     </div>
                                 </>
@@ -207,15 +181,13 @@ function TxModal({ open, handleClose, filter, planetId }: ITxProps) {
                                 onClick={async () => {
                                     if (isPendingTxn(pendingTransactions, "pending...")) return;
                                     await onMint();
-                                    await sleep(10);
-                                    handleClose();
                                 }}
                             >
                                 <p>{txnButtonText(pendingTransactions, "", buttonText)}</p>
                             </div>
                         </div>
                     </div>
-                </Box>
+                </Box>}
             </Paper>
         </Modal>
     );

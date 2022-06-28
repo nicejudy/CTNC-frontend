@@ -8,6 +8,7 @@ import Drawer from "../Drawer";
 // import { cubesImage } from "src/constants/img";
 import cubesImage from "../../assets/icons/nft_large.gif";
 import Messages from "../Messages";
+import HomeVideo from "src/assets/videos/home-bg.mp4";
 
 interface IViewBaseProps {
     children: React.ReactNode;
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
             duration: TRANSITION_DURATION,
         }),
         height: "100%",
-        overflow: "auto",
+        overflow: "inherit",
         marginLeft: DRAWER_WIDTH,
     },
     contentShift: {
@@ -53,6 +54,12 @@ function ViewBase({ children }: IViewBaseProps) {
 
     return (
         <div className="view-base-root">
+            <div className="view-video-section">
+                <video autoPlay muted loop playsInline className="view-video-widget">
+                    <source src={HomeVideo} type="video/mp4" />
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
             <Messages />
             <Header drawe={!isSmallerScreen} handleDrawerToggle={handleDrawerToggle} />
             <div className={classes.drawer}>
@@ -64,16 +71,6 @@ function ViewBase({ children }: IViewBaseProps) {
                 </Hidden>
             </div>
             <div className={`${classes.content} ${isSmallerScreen && classes.contentShift}`}>
-                {/* {!isSmallerScreen && (
-                    <div className="cubes-top">
-                        <p>{cubesImage}</p>
-                    </div>
-                )} */}
-                {/* {!isSmallScreen && (
-                    <div className="cubes-bottom">
-                        <img height="250" alt="" src={cubesImage} />
-                    </div>
-                )} */}
                 {children}
             </div>
         </div>

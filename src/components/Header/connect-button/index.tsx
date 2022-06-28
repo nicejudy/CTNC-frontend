@@ -6,11 +6,16 @@ import { IReduxState } from "../../../store/slices/state.interface";
 import { IPendingTxn } from "../../../store/slices/pending-txns-slice";
 import "./connect-menu.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import WalletIcon from "src/assets/icons/wallet.png";
+import ExitIcon from "src/assets/icons/exit.png";
 
 function ConnectMenu() {
     const { connect, disconnect, connected, web3, providerChainID, checkWrongNetwork } = useWeb3Context();
     const dispatch = useDispatch();
     const [isConnected, setConnected] = useState(connected);
+
+    const isVerySmallScreen = useMediaQuery("(max-width: 500px)");
 
     let pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {
         return state.pendingTransactions;
@@ -31,8 +36,8 @@ function ConnectMenu() {
     }
 
     if (isConnected && providerChainID !== DEFAULD_NETWORK) {
-        buttonText = "Wrong network";
-        buttonStyle = { backgroundColor: "rgb(255, 67, 67)" };
+        buttonText = "WRONG";
+        buttonStyle = { background: "rgb(255, 67, 67)" };
         clickFunc = () => {
             checkWrongNetwork();
         };
@@ -44,7 +49,9 @@ function ConnectMenu() {
 
     return (
         <div className="connect-button" style={buttonStyle} onClick={clickFunc}>
-            <p>{buttonText}</p>
+            {!isVerySmallScreen && <p>{buttonText}</p>}
+            {isVerySmallScreen && isConnected && <img src={ExitIcon} width="25" />}
+            {isVerySmallScreen && !isConnected && <img src={WalletIcon} width="25" />}
             {pendingTransactions.length > 0 && (
                 <div className="connect-button-progress">
                     <CircularProgress size={15} color="inherit" />

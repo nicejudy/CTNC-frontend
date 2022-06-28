@@ -1,5 +1,5 @@
-.planet-button{
-    background: rgba(70, 70, 140, 0.5);
+.nft-button{
+    background: rgba(12, 218, 34, 0.8);
     box-shadow: 0px 0px 10px rgba(44, 39, 109, 0.1);
     border-radius: 10px;
     padding: 9px 20px;
@@ -10,7 +10,14 @@
     align-items: center;
     text-align: center;
 
-    .planet-button-progress{
+    &:hover{
+      background-color: rgba(12, 218, 63);
+    }
+    &:active{
+      background-color: rgba(0, 94, 22, 0.8);
+    }
+
+    .nft-button-progress{
       margin-left: 10px;
       margin-top: 4px;
     }
@@ -18,15 +25,17 @@
     p{
       font-family: Montserrat SemiBold;
       font-weight: 600;
-      font-size: 18px;
+      font-size: 14px;
       color: #FFFFFF;
     }
   }
 
 .disabled {
   pointer-events: none;
-  background: rgba(255, 150, 255, 0.2);
-  // width: 100%;
+  background: rgba(177, 177, 177, 0.2);
+  p{
+    color:rgba(255, 255, 255, 0.575) !important;
+  }
 }
 
 .card-disabled {

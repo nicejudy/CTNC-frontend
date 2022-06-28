@@ -1,11 +1,9 @@
 import "./policy.scss";
-import Header from "../Landing/components/Header";
-import Footer from "../Landing/components/Footer";
 
 function Policy() {
     return (
         <div className="policy-root">
-            <Header />
+            {/* <Header /> */}
             <div className="policy-view">
                 <div className="policy-main">
                     <div className="policy-main-title-wrap">
@@ -167,7 +165,7 @@ function Policy() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

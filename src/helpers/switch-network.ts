@@ -3,7 +3,7 @@ import { Networks } from "../constants/blockchain";
 const switchRequest = () => {
     return window.ethereum.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0x13881" }],
+        params: [{ chainId: "0x4" }],
     });
 };
 
@@ -12,13 +12,13 @@ const addChainRequest = () => {
         method: "wallet_addEthereumChain",
         params: [
             {
-                chainId: "0x13881",
-                chainName: "Mumbai Network",
-                rpcUrls: ["https://matic-mumbai.chainstacklabs.com/"],
-                blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+                chainId: "0x4",
+                chainName: "Rinkeby Network",
+                rpcUrls: ["https://rinkeby.infura.io/v3/"],
+                blockExplorerUrls: ["https://rinkeby.etherscan.io/7f330304c1cd42d79093cc28ae461799"],
                 nativeCurrency: {
-                    name: "MATIC",
-                    symbol: "MATIC",
+                    name: "ETH",
+                    symbol: "ETH",
                     decimals: 18,
                 },
             },

@@ -1,53 +1,89 @@
 .dashboard-view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  overflow: hidden;
-
-  width: 89%;
-  // max-width: 833px;
-  margin: auto;
-
-  .dashboard-infos-wrap{
-    .dashboard-card{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-
-      position: relative;
-      z-index: 2;
-      
-      @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-        background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(100px);
-      }
-    
-      /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
-      @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-        background: #181B1C;
-      }
-
-      border-radius: 10px;
-      padding: 26px 0;
-
-      .card-title {
-        font-family: Montserrat Medium;
-        font-weight: 500;
-        font-size: 16px;
-        color: rgb(131, 131, 262);
-        text-align: center;
-      }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
   
-      .card-value {
-        font-family: Montserrat Bold;
-        font-weight: bold;
-        font-size: 24px;
-        font-weight: bold;
-        // color: #40ff80;
-        color: white;
+    width: 100%;
+    // max-width: 833px;
+    margin: auto;
+
+    .card-title-info {
+      position: relative;
+      display: inline-block;
+    }
+
+    .card-title-info .card-title-tooltip {
+      visibility: hidden;
+      // width: 410px;
+      background-color: rgba(22, 23, 31);
+      font-family: Montserrat Medium;
+      font-weight: 400;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 6px;
+      padding: 10px 10px;
+    
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+    .card-title-info:hover .card-title-tooltip{
+      visibility: visible;
+    }
+  
+    .dashboard-infos-wrap{
+      width: 95%;
+      .dashboard-card{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 150px;
+  
+        // position: relative;
+        
+        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+          background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        }
+      
+        /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+        @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+          background: rgba(0, 0, 0, 0.2);
+        }
+  
+        border-radius: 10px;
+        padding: 26px 0;
+  
+        .card-title {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          p{
+            font-family: Montserrat Medium;
+            font-weight: 500;
+            font-size: 16px;
+            color: #faa046;
+            text-align: center;
+          }
+        }
+    
+        .card-value {
+          font-family: Montserrat Bold;
+          font-weight: bold;
+          font-size: 24px;
+          font-weight: bold;
+          color: white;
+        }
+        .card-usd-value {
+          font-family: Montserrat Bold;
+          font-weight: bold;
+          font-size: 16px;
+          font-weight: bold;
+          color: rgba(255, 255, 255, 0.445);
+        }
       }
     }
   }
-}

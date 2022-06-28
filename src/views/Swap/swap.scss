@@ -4,6 +4,7 @@
   justify-content: center;
   flex-direction: column;
   overflow: hidden;
+  z-index: 1;
 
   iframe {
     width: 89%;
@@ -15,5 +16,6 @@
     border: 10px solid rgba(19, 4, 1, 0.5);
     // max-width: 600px;
     min-width: 300px;
+    z-index: inherit;
   }
 }

@@ -1,10 +1,13 @@
 import "./swap.scss";
+import { SWAP_URL } from "src/constants/data";
+import { ETH_ADDRESSES } from "src/constants/addresses";
+
 
 function Swap() {
     return (
         <div className="swap-view">
             <iframe
-                src="https://app.uniswap.org/#/swap?inputCurrency=0x6b175474e89094c44da98b954eedeac495271d0f&outputCurrency=0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359"
+                src={`${SWAP_URL}inputCurrency=${ETH_ADDRESSES.USDT_ADDRESS}&outputCurrency=${ETH_ADDRESSES.CML_ADDRESS}`}
                 height="660px"
                 width="100%"
             />

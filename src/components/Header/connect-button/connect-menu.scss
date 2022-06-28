@@ -1,12 +1,19 @@
 .connect-button{
-    background: rgba(70, 70, 140, 0.5);
+    background: linear-gradient(294.72deg, #FF4581 9.05%, #4388DD 79.28%);
+    transition: 0.5s all ease-in-out;
     box-shadow: 0px 0px 10px rgba(44, 39, 109, 0.1);
     border-radius: 10px;
-    padding: 9px 20px;
+    padding: 17px 40px;
     cursor: pointer;
+    max-width: 210px;
 
     display: flex;
     align-items: center;
+    // margin-top: 20px;
+
+    &:hover{
+      background: linear-gradient(-294.72deg, #FF4581 9.05%, #4388DD 79.28%);
+    }
 
     .connect-button-progress{
       margin-left: 10px;
@@ -16,7 +23,7 @@
     p{
       font-family: Montserrat SemiBold;
       font-weight: 600;
-      font-size: 18px;
+      font-size: 16px;
       color: #FFFFFF;
     }
   }

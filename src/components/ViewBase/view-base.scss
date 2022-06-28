@@ -4,11 +4,22 @@
     display: flex;
     flex-direction: column;
     // background: #001a0f;
-    // background-color: rgb(1, 50, 31);
+    // background-color: rgsb(1, 50, 31);
     // background-image: url('');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    .view-video-section{
+        .view-video-widget{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: 0;
+        }
+    }
 
     .cubes-top {
         opacity: 0.6;

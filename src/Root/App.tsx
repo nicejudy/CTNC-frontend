@@ -9,7 +9,7 @@ import { loadAccountDetails } from "../store/slices/account-slice";
 import { IReduxState } from "../store/slices/state.interface";
 import Loading from "../components/Loader";
 import ViewBase from "../components/ViewBase";
-import { Dashboard, NotFound, Mint, Gallery, Landing, Swap, Chart, ToS, Policy, Find } from "../views";
+import { Dashboard, NotFound, Mint, Gallery, Swap, Chart, ToS, Policy, Find } from "../views";
 import "./style.scss";
 
 function App() {
@@ -29,33 +29,33 @@ function App() {
     const [walletChecked, setWalletChecked] = useState(false);
 
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
-    const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.marketPrice));
+    const isAppLoaded = useSelector<IReduxState, boolean>(state => !Boolean(state.app.cmlPrice));
 
-    async function loadDetails(whichDetails: string) {
+    async function loadDetails(whichDetails: string, loading: boolean) {
         let loadProvider = provider;
 
         if (whichDetails === "app") {
-            loadApp(loadProvider);
+            loadApp(loadProvider, loading);
         }
 
         if (whichDetails === "account" && address && connected) {
-            loadAccount(loadProvider);
+            loadAccount(loadProvider, loading);
             if (isAppLoaded) return;
 
-            loadApp(loadProvider);
+            loadApp(loadProvider, loading);
         }
     }
 
     const loadApp = useCallback(
-        loadProvider => {
-            dispatch(loadAppDetails({ networkID: chainID, provider: loadProvider }));
+        (loadProvider, loading) => {
+            dispatch(loadAppDetails({ networkID: chainID, provider: loadProvider, loading: loading }));
         },
         [connected],
     );
 
     const loadAccount = useCallback(
-        loadProvider => {
-            dispatch(loadAccountDetails({ networkID: chainID, address, provider: loadProvider }));
+        (loadProvider, loading) => {
+            dispatch(loadAccountDetails({ networkID: chainID, address, provider: loadProvider, loading: loading }));
         },
         [connected],
     );
@@ -72,17 +72,25 @@ function App() {
 
     useEffect(() => {
         if (walletChecked) {
-            loadDetails("app");
-            loadDetails("account");
+            loadDetails("app", true);
+            loadDetails("account", true);
         }
     }, [walletChecked]);
 
     useEffect(() => {
         if (connected) {
-            loadDetails("app");
-            loadDetails("account");
+            loadDetails("app", true);
+            loadDetails("account", true);
         }
     }, [connected]);
+
+    useEffect(() => {
+        let timer = setInterval(() => {
+            loadDetails("app", false);
+            loadDetails("account", false);
+        }, 10000);
+        return () => clearInterval(timer);
+    });
 
     if (isAppLoading) return <Loading />;
 
@@ -131,7 +139,7 @@ function App() {
             </Route>
 
             <Route exact path="/">
-                <Landing />
+                <Redirect to="/dashboard" />
             </Route>
 
             <Route component={NotFound} />

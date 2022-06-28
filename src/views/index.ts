@@ -1,5 +1,4 @@
 export { default as Dashboard } from "./Dashboard";
-export { default as Landing } from "./Landing";
 export { default as Mint } from "./Mint";
 export { default as Gallery } from "./Gallery";
 export { default as Find } from "./Find";

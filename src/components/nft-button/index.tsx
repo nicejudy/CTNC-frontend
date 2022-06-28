@@ -3,18 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { IReduxState } from "src/store/slices/state.interface";
 import { IPendingTxn } from "src/store/slices/pending-txns-slice";
 import { useWeb3Context } from "src/hooks";
-import { compoundAll, claimAll, compoundReward, cashoutReward } from "src/store/slices/planet-thunk";
-import "./planet-button.scss";
+import { compoundAll, claimAll, compoundReward, cashoutReward } from "src/store/slices/nft-thunk";
+import "./nft-button.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TxModal from "../TxModal";
 
-interface IPlanetButtonProps {
+interface INftButtonProps {
     action: string;
-    planetId: string;
+    nftId: string;
     actionTime: number;
 }
 
-function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
+function NftButton({ action, nftId, actionTime }: INftButtonProps) {
     const [open, setOpen] = useState(false);
     const { provider, address, chainID, checkWrongNetwork } = useWeb3Context();
     const dispatch = useDispatch();
@@ -39,12 +39,12 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
 
     const onCompoundReward = async () => {
         if (await checkWrongNetwork()) return;
-        dispatch(compoundReward({ planetId, provider, address, networkID: chainID }));
+        dispatch(compoundReward({ nftId, provider, address, networkID: chainID }));
     };
 
-    const onClaimReward = async () => {
+    const onClaimReward = async (swapping: number) => {
         if (await checkWrongNetwork()) return;
-        dispatch(cashoutReward({ planetId, provider, address, networkID: chainID }));
+        dispatch(cashoutReward({ nftId, swapping, provider, address, networkID: chainID }));
     };
 
     const calculateTimeLeft = () => {
@@ -63,7 +63,7 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
     });
 
     let buttonText = "";
-    let className = "planet-button";
+    let className = "nft-button";
     let clickFunc = () => {};
     let filter = "";
 
@@ -79,34 +79,50 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
             handleOpen();
         };
         filter = action;
+    } else if (action == "transfer-disabled") {
+        buttonText = "Transfer";
+        className = "nft-button disabled";
+        clickFunc = () => {};
     } else if (action == "upgrade") {
-        buttonText = timeLeft == 0 ? "Upgrade" : new Date(timeLeft * 1000).toISOString().substring(11, 19);
-        className = timeLeft == 0 ? "planet-button" : "planet-button disabled card-disabled";
+        buttonText = "Stake";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
         clickFunc = () => {
             handleOpen();
         };
         filter = action;
     } else if (action == "compound") {
-        buttonText = timeLeft == 0 ? "Compound" : new Date(timeLeft * 1000).toISOString().substring(11, 19);
-        className = timeLeft == 0 ? "planet-button" : "planet-button disabled card-disabled";
+        buttonText = "Compound";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
         clickFunc = () => {
             onCompoundReward();
         };
-    } else if (action == "claim") {
-        buttonText = timeLeft == 0 ? "Claim" : new Date(timeLeft * 1000).toISOString().substring(11, 19);
-        className = timeLeft == 0 ? "planet-button" : "planet-button disabled card-disabled";
+    } else if (action == "claim-cml") {
+        buttonText = "Claim $CML";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
         clickFunc = () => {
-            onClaimReward();
+            onClaimReward(0);
+        };
+    } else if (action == "claim-usd") {
+        buttonText = "Claim USDC";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
+        clickFunc = () => {
+            onClaimReward(1);
+        };
+    } else if (action == "claim-support") {
+        buttonText = "Claim Gift";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
+        clickFunc = () => {
+            onClaimReward(2);
         };
     } else if (action == "compoundall") {
         buttonText = "Compound All";
-        className = timeLeft == 0 ? "planet-button" : "planet-button disabled";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
         clickFunc = () => {
             onCompoundAll();
         };
     } else if (action == "claimall") {
         buttonText = "Claim All";
-        className = timeLeft == 0 ? "planet-button" : "planet-button disabled";
+        className = timeLeft == 0 ? "nft-button" : "nft-button disabled";
         clickFunc = () => {
             onClaimAll();
         };
@@ -126,14 +142,14 @@ function PlanetButton({ action, planetId, actionTime }: IPlanetButtonProps) {
             <div className={className} onClick={clickFunc}>
                 <p>{buttonText}</p>
                 {pendingTransactions.length > 0 && (
-                    <div className="planet-button-progress">
+                    <div className="nft-button-progress">
                         <CircularProgress size={15} color="inherit" />
                     </div>
                 )}
             </div>
-            <TxModal open={open} handleClose={handleClose} filter={filter} planetId={planetId} />
+            <TxModal open={open} handleClose={handleClose} filter={filter} nftId={nftId} />
         </>
     );
 }
 
-export default PlanetButton;
+export default NftButton;
