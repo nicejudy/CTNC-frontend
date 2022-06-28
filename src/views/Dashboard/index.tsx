@@ -56,10 +56,10 @@ function Dashboard() {
                                     </div> */}
                                 </div>
                                 <p className="card-value">
-                                    {isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(parseInt(app.cmlTotalSupply) + parseInt(app.totalValueLocked))} $CML`}
+                                    {isAppLoading ? <Skeleton width="100px" /> : `${new Intl.NumberFormat("en-US").format(parseInt(app.cmlTotalSupply))} $CML`}
                                 </p>
                                 <p className="card-usd-value">
-                                    {isAppLoading ? <Skeleton width="100px" /> : `$${new Intl.NumberFormat("en-US").format(Math.floor(parseInt(app.cmlTotalSupply) + parseInt(app.totalValueLocked))*app.cmlPrice)}`}
+                                    {isAppLoading ? <Skeleton width="100px" /> : `$${new Intl.NumberFormat("en-US").format(Math.floor(parseInt(app.cmlTotalSupply))*app.cmlPrice)}`}
                                 </p>
                             </div>
                         </Grid>
