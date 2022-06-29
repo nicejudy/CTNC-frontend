@@ -10,6 +10,28 @@
     background-repeat: no-repeat;
     background-size: cover;
 
+    .view-base-header{
+        // height: 50px !important;
+        width: 100%;
+        padding: 10px;
+        background: #4eb363;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        position: fixed;
+        p{
+            font-family: Montserrat Medium;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            color: #FFFFFF;
+            a{
+                color: #e5f04c;
+            }
+        }
+    }
+
     .view-video-section{
         .view-video-widget{
             position: fixed;

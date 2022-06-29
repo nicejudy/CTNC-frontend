@@ -60,6 +60,9 @@ function ViewBase({ children }: IViewBaseProps) {
                     Your browser does not support HTML5 video.
                 </video>
             </div>
+            <div className="view-base-header">
+                <p>This is demo app on Rinkeby testnet. Please read more <a href="https://medium.com/@ctnc/" target="_blink">here</a></p>
+            </div>
             <Messages />
             <Header drawe={!isSmallerScreen} handleDrawerToggle={handleDrawerToggle} />
             <div className={classes.drawer}>

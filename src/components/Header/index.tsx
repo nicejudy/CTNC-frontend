@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
             width: "100%",
             padding: "20px 0 30px 0",
         },
+        marginTop: "50px",
         paddingTop: "20px",
         justifyContent: "flex-end",
         alignItems: "flex-end",
