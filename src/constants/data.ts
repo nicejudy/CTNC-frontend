@@ -18,7 +18,7 @@ export const DOCS_URL = "https://docs.cryptotigernode.club/";
 
 export const DISCORD_URL = "https://discord.gg/ctnc";
 
-export const TELEGRAM_URL = "https://t.me/C_T_N_C";
+export const TELEGRAM_URL = "https://t.me/official_ctnc";
 
 export const DEXSCREENER_URL = "https://dexscreener.com/ethereum/";
 
