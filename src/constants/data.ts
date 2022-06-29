@@ -10,7 +10,7 @@ export const IPFS_URL = "https://ipfs.io/ipfs/";
 
 export const OPENSEA_ITEM_URL = "https://testnets.opensea.io/assets/rinkeby/";
 
-export const OPENSEA_COLLECTION_URL = "https://testnets.opensea.io/collection/rinkeby-ctnc-v4";
+export const OPENSEA_COLLECTION_URL = "https://testnets.opensea.io/collection/rinkeby-ctnc";
 
 export const TWITTER_URL = "https://twitter.com/official_ctnc";
 
