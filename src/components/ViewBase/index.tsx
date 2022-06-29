@@ -61,7 +61,7 @@ function ViewBase({ children }: IViewBaseProps) {
                 </video>
             </div>
             <div className="view-base-header">
-                <p>This is demo app on Rinkeby testnet. Please read more <a href="https://medium.com/@ctnc/" target="_blink">here</a></p>
+                <p>This is demo app on Rinkeby testnet. Please read <a href="https://medium.com/@ctnc/enjoy-ctnc-on-rinkeby-testnet-49ee18e7cce9" target="_blink">our article here</a></p>
             </div>
             <Messages />
             <Header drawe={!isSmallerScreen} handleDrawerToggle={handleDrawerToggle} />
