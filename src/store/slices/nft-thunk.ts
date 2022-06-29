@@ -294,7 +294,7 @@ export const cashoutReward = createAsyncThunk("mint/cashoutReward", async ({ nft
         } else if (swapping == 1) {
             tx = await apeuManager.cashoutReward(nftId, true, { gasPrice });
         } else if (swapping == 2) {
-            tx = await apeuManager.cashoutRewardFromSupports(nftId, true, { gasPrice });
+            tx = await apeuManager.cashoutRewardFromGift(nftId, false, { gasPrice });
         } else {
             return;
         }
