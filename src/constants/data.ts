@@ -2,7 +2,7 @@ export const mintPrice = 0.1;
 
 export const META_IMAGES = "QmTPQ4hTxpsguTKit31mW5cAjZbnvM4hB9vQkwgDkVGbwh";
 
-export const META_JSONS = "QmZ5ozPL3C8D3yGPJf2M4uiaWeR5xgVCAAW4aqwMDyW5hA";
+export const META_JSONS = "QmeR1PniFNR2b5yxp5FAfMvXhnacPrSAJwXnTmdmVX4bVH";
 
 export const ETHSCAN_URL = "https://rinkeby.etherscan.io/address/";
 
@@ -23,3 +23,5 @@ export const TELEGRAM_URL = "https://t.me/official_ctnc";
 export const DEXSCREENER_URL = "https://dexscreener.com/ethereum/";
 
 export const SWAP_URL = "https://app.uniswap.org/#/swap?chain=rinkeby&";
+
+export const INVITE_LINK = "https://demo.cryptotigernode.club/find?id=";

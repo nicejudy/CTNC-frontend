@@ -34,6 +34,9 @@
     }
     .find-infos-nfts {
       margin-top: 10px;
+      .MuiGrid-spacing-xs-4{
+        width: 100% !important;
+      }
       .find-infos-loading{
         display: flex;
         align-items: center;

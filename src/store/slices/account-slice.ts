@@ -1,3 +1,4 @@
+import React, { useState, useCallback, useEffect } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 import { getAddresses } from "../../constants";
@@ -6,7 +7,7 @@ import { setAll } from "../../helpers";
 
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks, USDC_DECIMALS } from "../../constants/blockchain";
+import { Networks, USDC_DECIMALS, META_JSONS, IPFS_URL } from "../../constants";
 import { RootState } from "../store";
 
 interface IGetBalances {
@@ -68,6 +69,7 @@ export interface INftInfoDetails {
     rewardPerDay: number;
     totalClaimed: number;
     exists: boolean;
+    attributes: any[];
 }
 
 let initialState = {
@@ -132,6 +134,11 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
             supporters[j] = supporter;
         }
 
+        const metaUrl = `${IPFS_URL}${META_JSONS}/${Number(nftData[i][0])}`;
+
+        const res = await axios(metaUrl);
+        const attributes = res.data.attributes;
+
         const nft: INftInfoDetails = {
             id: Number(nftData[i][0]),
             owner: await nftManagerContract.ownerOf(nftData[i][0]),
@@ -142,6 +149,7 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
             totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
             exists: Boolean(nftData[i][1][5]),
             rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
+            attributes: attributes
         };
 
         nftInfoData[i] = nft;

@@ -25,16 +25,22 @@ body {
   box-sizing: border-box;
 }
 
-body::-webkit-scrollbar {
-  display: none !important;
-}
+// body::-webkit-scrollbar {
+//   display: none !important;
+// }
 
 #WEB3_CONNECT_MODAL_ID {
-  z-index: 50;
+  z-index: 5000;
+  position: relative;
 }
 
-div::-webkit-scrollbar {
-  display: none !important;
+// div::-webkit-scrollbar {
+//   display: none !important;
+// }
+
+body {
+  // overflow-x: hidden;
+  overflow-y: visible;
 }
 
 input::-webkit-outer-spin-button,

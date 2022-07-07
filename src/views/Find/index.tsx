@@ -9,6 +9,8 @@ import { IAppSlice } from "src/store/slices/app-slice";
 import { INftInfoDetails } from "src/store/slices/account-slice";
 import { loadAccountDetails, loadIdDetails } from "src/store/slices/search-slice";
 import ApeCard from "src/components/ApeCard";
+import TigerModal from "src/components/TigerModal";
+import Gallery from "../Gallery";
 import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { getMainnetURI } from "src/hooks/web3/helpers/get-mainnet-uri";
 import { DEFAULD_NETWORK } from "src/constants";
@@ -40,25 +42,28 @@ function Find() {
         if (parseInt(id) > 0 && parseInt(id) <= app.nftMintedSupply * 1) searchID([id]);
     }
 
+    const [open, setOpen] = useState(true);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <div className="find-view">
-            <div className="find-infos-wrap">
-                <div className="find-infos-nfts">
-                    {loading && <div className="find-infos-loading"><CircularProgress color="secondary" size={80} /></div>}
-                    <Grid container spacing={4}>
-                        {nfts.length == 0 ? (
-                            <></>
-                        ) : (
-                            nfts.map(nft => (
-                                <Grid key={nft.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                    <ApeCard nft={nft} compoundDelay={app.compoundDelay * 1} filter="search" />
-                                </Grid>
-                            ))
-                        )}
-                    </Grid>
+        <>
+            <Gallery/>
+            <div className="find-view">
+                <div className="find-infos-wrap">
+                    <div className="find-infos-nfts">
+                        {loading && <div className="find-infos-loading"><CircularProgress color="secondary" size={80} /></div>}
+                    </div>
                 </div>
             </div>
-        </div>
+            {nfts.length > 0 && <TigerModal open={open} handleClose={handleClose} nft={nfts[0]} />}
+        </>
     );
 }
 

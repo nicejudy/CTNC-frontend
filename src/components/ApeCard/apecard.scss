@@ -3,6 +3,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    min-width: 250px;
+    // max-width: 350px;
 
     position: relative;
     z-index: 2;
@@ -24,6 +26,10 @@
       position: fixed;
       right: 39px;
       top: 39px;
+    }
+
+    .card-image{
+      cursor: pointer;
     }
 
     .card-title {
@@ -74,6 +80,7 @@
         padding: 10px;
         border-radius: 10px;
         background: #ffffff55;
+        cursor: pointer;
         // top: 39px;
         &:hover{
           background-color: #ffffff33;

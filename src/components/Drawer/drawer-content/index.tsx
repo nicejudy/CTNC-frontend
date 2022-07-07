@@ -30,6 +30,9 @@ function NavContent() {
         if (currentPath.indexOf("chart") >= 0 && page === "chart") {
             return true;
         }
+        if (currentPath.indexOf("mynfts") >= 0 && page === "mynfts") {
+            return true;
+        }
         return false;
     }, []);
 
@@ -74,6 +77,20 @@ function NavContent() {
                         to="/mint"
                         isActive={(match: any, location: any) => {
                             return checkPage(location, "mint");
+                        }}
+                        className={classnames("button-dapp-menu", { active: isActive })}
+                    >
+                        <div className="dapp-menu-item">
+                            {/* <img alt="" src={MintIcon} /> */}
+                            <p>NEW MINT</p>
+                        </div>
+                    </Link>
+
+                    <Link
+                        component={NavLink}
+                        to="/mynfts"
+                        isActive={(match: any, location: any) => {
+                            return checkPage(location, "mynfts");
                         }}
                         className={classnames("button-dapp-menu", { active: isActive })}
                     >

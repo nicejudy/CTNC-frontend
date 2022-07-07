@@ -1,9 +1,11 @@
+import React, { useState, useCallback, useEffect } from "react";
 import { ethers } from "ethers";
+import axios from "axios";
 import { getAddresses } from "../../constants";
 import { CmlContract, NftManagerContract } from "../../abi";
 
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Networks } from "../../constants/blockchain";
+import { Networks, USDC_DECIMALS, META_JSONS, IPFS_URL } from "../../constants";
 import { IUserInfoDetails } from "./account-slice";
 
 interface ILoadAccountDetails {
@@ -22,6 +24,7 @@ export interface INftInfoDetails {
     rewardPerDay: number;
     totalClaimed: number;
     exists: boolean;
+    attributes: any[];
 }
 
 export const loadAccountDetails = async ({ networkID, provider, address }: ILoadAccountDetails) => {
@@ -56,6 +59,11 @@ export const loadAccountDetails = async ({ networkID, provider, address }: ILoad
             supporters[j] = supporter;
         }
 
+        const metaUrl = `${IPFS_URL}${META_JSONS}/${Number(nftData[i][0])}`;
+
+        const res = await axios(metaUrl);
+        const attributes = res.data.attributes;
+
         const nft: INftInfoDetails = {
             id: Number(nftData[i][0]),
             owner: await nftManagerContract.ownerOf(nftData[i][0]),
@@ -66,6 +74,7 @@ export const loadAccountDetails = async ({ networkID, provider, address }: ILoad
             totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
             exists: Boolean(nftData[i][1][5]),
             rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
+            attributes: attributes
         };
 
         nftInfoData[i] = nft;
@@ -113,6 +122,11 @@ export const loadIdDetails = async ({ networkID, provider, id }: ILoadIdDetails)
             supporters[j] = supporter;
         }
 
+        const metaUrl = `${IPFS_URL}${META_JSONS}/${Number(nftData[i][0])}`;
+
+        const res = await axios(metaUrl);
+        const attributes = res.data.attributes;
+
         const nft: INftInfoDetails = {
             id: Number(nftData[i][0]),
             owner: await nftManagerContract.ownerOf(nftData[i][0]),
@@ -123,6 +137,7 @@ export const loadIdDetails = async ({ networkID, provider, id }: ILoadIdDetails)
             totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
             exists: Boolean(nftData[i][1][5]),
             rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
+            attributes: attributes
         };
 
         nftInfoData[i] = nft;

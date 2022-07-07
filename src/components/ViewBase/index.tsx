@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
             duration: TRANSITION_DURATION,
         }),
         height: "100%",
-        overflow: "inherit",
+        // overflow: "inherit",
         marginLeft: DRAWER_WIDTH,
     },
     contentShift: {

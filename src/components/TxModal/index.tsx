@@ -94,101 +94,103 @@ function TxModal({ open, handleClose, filter, nftId }: ITxProps) {
 
     return (
         <Modal id="hades" open={open} onClose={handleClose} hideBackdrop>
-            <Paper className="ohm-card ohm-popover txmodal-poper">
-                <div className="cross-wrap">
-                    <div className="txmodal-title">
-                        <p>{titleText}</p>
+            <div className="hades-container">
+                <Paper className="ohm-card ohm-popover txmodal-poper">
+                    <div className="cross-wrap">
+                        <div className="txmodal-title">
+                            <p>{titleText}</p>
+                        </div>
+                        <IconButton onClick={handleClose}>
+                            <SvgIcon color="primary" component={XIcon} />
+                        </IconButton>
                     </div>
-                    <IconButton onClick={handleClose}>
-                        <SvgIcon color="primary" component={XIcon} />
-                    </IconButton>
-                </div>
-                {(!address || DEFAULD_NETWORK != providerChainID) && <div className="txmodal-wallet"><ConnectMenu /></div>}
-                {(address && DEFAULD_NETWORK == providerChainID) && <Box className="card-content">
-                    <div className="txmodal-header">
-                        <div className="txmodal-header-token-select-wrap">
-                            {filter == "create" && <img className="txmodal-header-img" src={GifIcon} />}
-                            {filter != "upgrade" && filter != "create" && (
-                                <>
-                                    <div className="txmodal-header-help-text">
-                                        <p>{text1}</p>
-                                    </div>
-                                    <OutlinedInput
-                                        type="text"
-                                        placeholder={text2}
-                                        className="txmodal-header-token-select-input"
-                                        value={name}
-                                        onChange={e => setName(e.target.value)}
-                                        labelWidth={0}
-                                    />
-                                </>
-                            )}
-                            {filter == "create" && (
-                                <>
-                                    <div className="txmodal-header-help-text">
-                                        <p>Amount</p>
-                                    </div>
-                                    <OutlinedInput
-                                        type="number"
-                                        placeholder="0"
-                                        className="txmodal-header-token-select-input"
-                                        value={number}
-                                        onChange={e => setNumber(e.target.value)}
-                                        labelWidth={0}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <div className="txmodal-header-token-select-input-btn" onClick={setMaxNumber}>
-                                                    <p>Max</p>
-                                                </div>
-                                            </InputAdornment>
-                                        }
-                                    />
-                                </>
-                            )}
-                            {filter == "upgrade" && (
-                                <>
-                                    <div className="txmodal-header-help-text">
-                                        <p>{text1}</p>
-                                    </div>
-                                    <OutlinedInput
-                                        type="number"
-                                        placeholder=""
-                                        className="txmodal-header-token-select-input"
-                                        value={quantity}
-                                        onChange={e => setQuantity(e.target.value)}
-                                        labelWidth={0}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <div className="txmodal-header-token-select-input-btn" onClick={setMaxQuantity}>
-                                                    <p>Max</p>
-                                                </div>
-                                            </InputAdornment>
-                                        }
-                                    />
-                                </>
-                            )}
-                            {filter == "rename" && (
-                                <>
-                                    <div className="txmodal-header-help-text">
-                                        <p>
-                                            Warning: <span className="txmodal-span">5%</span> of Locked $CML will be burned as fee.
-                                        </p>
-                                    </div>
-                                </>
-                            )}
-                            <div
-                                className="txmodal-header-token-select-btn"
-                                onClick={async () => {
-                                    if (isPendingTxn(pendingTransactions, "pending...")) return;
-                                    await onMint();
-                                }}
-                            >
-                                <p>{txnButtonText(pendingTransactions, "", buttonText)}</p>
+                    {(!address || DEFAULD_NETWORK != providerChainID) && <div className="txmodal-wallet"><ConnectMenu /></div>}
+                    {(address && DEFAULD_NETWORK == providerChainID) && <Box className="card-content">
+                        <div className="txmodal-header">
+                            <div className="txmodal-header-token-select-wrap">
+                                {filter == "create" && <img className="txmodal-header-img" src={GifIcon} />}
+                                {filter != "upgrade" && filter != "create" && (
+                                    <>
+                                        <div className="txmodal-header-help-text">
+                                            <p>{text1}</p>
+                                        </div>
+                                        <OutlinedInput
+                                            type="text"
+                                            placeholder={text2}
+                                            className="txmodal-header-token-select-input"
+                                            value={name}
+                                            onChange={e => setName(e.target.value)}
+                                            labelWidth={0}
+                                        />
+                                    </>
+                                )}
+                                {filter == "create" && (
+                                    <>
+                                        <div className="txmodal-header-help-text">
+                                            <p>Amount</p>
+                                        </div>
+                                        <OutlinedInput
+                                            type="number"
+                                            placeholder="0"
+                                            className="txmodal-header-token-select-input"
+                                            value={number}
+                                            onChange={e => setNumber(e.target.value)}
+                                            labelWidth={0}
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    <div className="txmodal-header-token-select-input-btn" onClick={setMaxNumber}>
+                                                        <p>Max</p>
+                                                    </div>
+                                                </InputAdornment>
+                                            }
+                                        />
+                                    </>
+                                )}
+                                {filter == "upgrade" && (
+                                    <>
+                                        <div className="txmodal-header-help-text">
+                                            <p>{text1}</p>
+                                        </div>
+                                        <OutlinedInput
+                                            type="number"
+                                            placeholder=""
+                                            className="txmodal-header-token-select-input"
+                                            value={quantity}
+                                            onChange={e => setQuantity(e.target.value)}
+                                            labelWidth={0}
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    <div className="txmodal-header-token-select-input-btn" onClick={setMaxQuantity}>
+                                                        <p>Max</p>
+                                                    </div>
+                                                </InputAdornment>
+                                            }
+                                        />
+                                    </>
+                                )}
+                                {filter == "rename" && (
+                                    <>
+                                        <div className="txmodal-header-help-text">
+                                            <p>
+                                                Warning: <span className="txmodal-span">5%</span> of Locked $CML will be burned as fee.
+                                            </p>
+                                        </div>
+                                    </>
+                                )}
+                                <div
+                                    className="txmodal-header-token-select-btn"
+                                    onClick={async () => {
+                                        if (isPendingTxn(pendingTransactions, "pending...")) return;
+                                        await onMint();
+                                    }}
+                                >
+                                    <p>{txnButtonText(pendingTransactions, "", buttonText)}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Box>}
-            </Paper>
+                    </Box>}
+                </Paper>
+            </div>
         </Modal>
     );
 }

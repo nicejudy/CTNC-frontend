@@ -89,22 +89,22 @@ function ToolBar({ nfts }: IToolBarProps) {
                     <Toolbar disableGutters className="dapp-topbar">
                         <div className="dapp-topbar-btns-wrap">
                             <NftButton action="create" nftId="0" actionTime={timestamp} />
-                            {!isSmallScreen && count > 0 && (
+                            {/* {!isSmallScreen && count > 0 && (
                                 <>
                                     {enabledCount == count && <NftButton action="compoundall" nftId="0" actionTime={timestamp} />}
                                     {enabledCount == count && <NftButton action="claimall" nftId="0" actionTime={timestamp} />}
                                 </>
-                            )}
+                            )} */}
                         </div>
                     </Toolbar>
-                    {isSmallScreen && enabledCount == count && count > 0 && (
+                    {/* {isSmallScreen && enabledCount == count && count > 0 && (
                         <Toolbar disableGutters className="dapp-topbar">
                             <div className="dapp-topbar-btns-wrap">
                                 {enabledCount == count && <NftButton action="compoundall" nftId="0" actionTime={timestamp} />}
                                 {enabledCount == count && <NftButton action="claimall" nftId="0" actionTime={timestamp} />}
                             </div>
                         </Toolbar>
-                    )}
+                    )} */}
                 </AppBar>
             </div>
             <TxModal open={openModal} handleClose={handleCloseModal} filter="create" nftId={"0"} />

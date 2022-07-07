@@ -1,0 +1,422 @@
+.tm-poper {
+    // max-width: 403px !important;
+    width: 100%;
+
+    .tm-wallet{
+        display: flex;
+        justify-content: center;
+        padding: 30px 0;
+    }
+
+    .tm-title {
+        margin-left: 10px;
+        font-family: Montserrat SemiBold;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+        color: #FFFFFF;
+    }
+
+    .tm-wrapper{
+        display: flex;
+        flex-direction: row;
+        .tm-summary{
+            .owner-badge{
+                position: absolute;
+                left: 39px;
+                top: 75px;
+              }
+            .tm-image-section{
+                text-align: center;
+            }
+            .tm-summary-section{
+                .tm-description{
+
+                }
+                .tm-properties{
+                    border: 1px solid white;
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin-bottom: 20px;
+                    margin-top: 20px;
+                    .tm-properties-title{
+                        p{
+                            font-family: Montserrat SemiBold;
+                            font-style: normal;
+                            font-weight: 600;
+                            font-size: 20px;
+                            color: #FFFFFF;
+                        }
+                        margin-bottom: 20px;
+                    }
+                    .tm-properties-container {
+                        border-bottom: #FFFFFF;
+                    }
+                    .tm-properties-item{
+                        border: 1px solid white;
+                        border-radius: 10px;
+                        text-align: center;
+                        padding: 10px;
+                        .tm-properties-type{
+                            font-family: Montserrat;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 14px;
+                            color: #FFFFFF;
+                        }
+                        .tm-properties-value{
+                            font-family: Montserrat;
+                            font-style: normal;
+                            font-weight: 600;
+                            font-size: 16px;
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+            }
+            .tm-details-section-2{
+                border: 1px solid #ffffff;
+                border-radius: 10px;
+                margin-top: 10px;
+                padding: 20px;
+                .tm-referral-title{
+                    font-family: Montserrat;
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 20px;
+                    color: #FFFFFF;
+                    margin-bottom: 20px;
+                }
+                .tm-referral{
+                    margin-bottom: 20px;
+                    .referral-link {
+                        width: 100%;
+        
+                        background: rgba(255, 255, 255, 0.2);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 10px;
+                        outline: none;
+        
+                        .MuiOutlinedInput-input {
+                            font-family: Montserrat Medium;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 16px;
+                            color: rgba(255, 255, 255, 0.6);
+                            padding: 10px 20px;
+                        }
+        
+                        .MuiOutlinedInput-notchedOutline {
+                            border-color: rgba(255, 255, 255, 0.2) !important;
+                        }
+
+                        .referral-link-btn{
+                            background-color: rgba(255, 255, 255, 0.3);
+                            margin: -13px;
+                            padding: 7px 13px;
+                            border-radius: 10px;
+                            cursor: pointer;
+                            &:hover{
+                                background-color: rgba(255, 255, 255, 0.4);
+                              }
+                            &:active{
+                                background-color: rgba(255, 255, 255, 0.1);
+                            }
+                        }
+                    }
+                }
+                .referral-footer{
+                    font-family: Montserrat;
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 16px;
+                    color: #FFFFFF;
+                    text-align: center;
+                }
+            }
+        }
+        .tm-main{
+            .tm-details{
+                padding: 20px;
+                margin-top: 20px;
+                .tm-details-section-1{
+                    .tm-space{
+                        margin-bottom: 30px !important;
+                    }
+                    .tm-details-item{
+                        display: flex;
+                        justify-content: space-between;
+                        .MuiTypography-colorPrimary {
+                            color: white;
+                        }
+                        margin-bottom: 8px;
+                        align-items: center;
+                        .tm-details-title{
+                            font-family: Montserrat semiBold;
+                            font-style: normal;
+                            font-weight: 600;
+                            font-size: 32px;
+                            color: #FFFFFF;
+                        }
+                        .tm-details-input-section {
+                            width: 100%;
+            
+                            background: rgba(255, 255, 255, 0.2);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 10px;
+                            outline: none;
+            
+                            .MuiOutlinedInput-input {
+                                font-family: Montserrat Medium;
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 16px;
+                                color: rgba(255, 255, 255, 0.6);
+                                padding: 10px 20px;
+                            }
+            
+                            .MuiOutlinedInput-notchedOutline {
+                                border-color: rgba(255, 255, 255, 0.2) !important;
+                            }
+                        }
+                        .tm-details-type{
+                            font-family: Montserrat;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 16px;
+                            color: #FFFFFF;
+                        }
+                        .tm-details-value{
+                            .tm-details-value-cml{
+                                font-family: Montserrat;
+                                font-style: normal;
+                                font-weight: 600;
+                                font-size: 18px;
+                                color: #FFFFFF;
+                                text-align: right;
+                            }
+                            .tm-details-value-usd{
+                                font-family: Montserrat;
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 14px;
+                                color: #FFFFFF;
+                                text-align: right;
+                            }
+                        }
+                        .tm-details-wrapper{
+                            display: flex;
+                            align-items: center;
+                        }
+                        p{
+                            font-family: Montserrat SemiBold;
+                            font-weight: 600;
+                            font-size: 14px;
+                            color: #FFFFFF;
+                        }
+                        .tm-coin{
+                            padding: 6px 15px !important;
+                        }
+                        .tm-details-action{
+                            background: rgba(12, 218, 34, 0.8);
+                            box-shadow: 0px 0px 10px rgba(44, 39, 109, 0.1);
+                            border-radius: 10px;
+                            display: flex;
+                            align-items: center !important;
+                            padding: 9px 20px;
+                            cursor: pointer;
+                            margin-left: 10px;
+                            margin-top: 5px;
+                            margin-bottom: 5px;
+
+                            &:hover{
+                                background-color: rgba(12, 218, 63);
+                              }
+                            &:active{
+                                background-color: rgba(0, 94, 22, 0.8);
+                            }
+                        
+                            .nft-button-progress{
+                                margin-left: 10px;
+                                margin-top: 4px;
+                            }
+                        
+                            p{
+                                font-family: Montserrat SemiBold;
+                                font-weight: 600;
+                                font-size: 14px;
+                                color: #FFFFFF;
+                            }
+                        }
+                    }
+                    .tm-details-divider{
+                        margin-bottom: 30px;
+                    }
+                }
+            }
+            .tm-interact{
+                .tm-space{
+                    margin-bottom: 30px !important;
+                }
+                .tm-interact-item{
+                    border: 1px solid #ffffff;
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin-bottom: 20px;
+                    align-items: center;
+                    .tm-interact-item-wrapper{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-top: 15px;
+                    }
+                    .MuiTypography-colorPrimary {
+                        color: white;
+                    }
+                    .tm-interact-title{
+                        font-family: Montserrat semiBold;
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 32px;
+                        color: #FFFFFF;
+                    }
+                    .tm-interact-input-section {
+                        width: 100%;
+        
+                        background: rgba(255, 255, 255, 0.2);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 10px;
+                        outline: none;
+        
+                        .MuiOutlinedInput-input {
+                            font-family: Montserrat Medium;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 16px;
+                            color: rgba(255, 255, 255, 0.6);
+                            padding: 10px 20px;
+                        }
+        
+                        .MuiOutlinedInput-notchedOutline {
+                            border-color: rgba(255, 255, 255, 0.2) !important;
+                        }
+
+                        .tm-interact-input-btn {
+                            cursor: pointer;
+        
+                            p {
+                                font-family: Montserrat SemiBold;
+                                font-weight: 600;
+                                font-size: 18px;
+                                color: #FFFFFF;
+                            }
+                        }
+                    }
+                    .tm-interact-warning{
+                        p{
+                            color: #ffe600;
+                        }
+                    }
+                    .tm-interact-type{
+                        font-family: Montserrat;
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 16px;
+                        color: #FFFFFF;
+                    }
+                    .tm-interact-value{
+                        .tm-interact-value-cml{
+                            font-family: Montserrat;
+                            font-style: normal;
+                            font-weight: 600;
+                            font-size: 18px;
+                            color: #FFFFFF;
+                            text-align: right;
+                        }
+                        .tm-interact-value-usd{
+                            font-family: Montserrat;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 14px;
+                            color: #FFFFFF;
+                            text-align: right;
+                        }
+                    }
+                    .tm-interact-wrapper{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-top: 15px;
+                    }
+                    p{
+                        font-family: Montserrat SemiBold;
+                        font-weight: 600;
+                        font-size: 14px;
+                        color: #FFFFFF;
+                    }
+                    .tm-coin{
+                        padding: 6px 15px !important;
+                    }
+                    .no-margin{
+                        margin-top: 0px !important;
+                    }
+                    .disabled{
+                        background: rgba(37, 46, 39, 0.8) !important;
+                    }
+                    .tm-interact-action{
+                        background: rgba(12, 218, 34, 0.8);
+                        box-shadow: 0px 0px 10px rgba(44, 39, 109, 0.1);
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center !important;
+                        padding: 9px 20px;
+                        cursor: pointer;
+
+                        &:hover{
+                            background-color: rgba(12, 218, 63);
+                          }
+                        &:active{
+                            background-color: rgba(0, 94, 22, 0.8);
+                        }
+                    
+                        .nft-button-progress{
+                            margin-left: 10px;
+                            margin-top: 4px;
+                        }
+                    
+                        p{
+                            font-family: Montserrat SemiBold;
+                            font-weight: 600;
+                            font-size: 14px;
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+                .tm-interact-divider{
+                    margin-bottom: 30px;
+                }
+            }
+            .tm-socials{
+                margin-top: 30px;
+                .tm-socials-wrapper{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .MuiTypography-colorPrimary {
+                        color: #00ff22;
+                    }
+                    .card-opensea-link{
+                        p{
+                            font-family: Montserrat;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #00ff22;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

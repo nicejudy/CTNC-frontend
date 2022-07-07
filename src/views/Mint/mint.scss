@@ -2,169 +2,93 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  overflow: hidden;
+  z-index: 6;
 
   width: 89%;
-  // max-width: 833px;
   margin: auto;
+  height: 100%;
 
   .mint-infos-wrap{
     width: 100%;
-    .mint-card{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-
-      position: relative;
-      z-index: 2;
-      
-      @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-        background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(100px);
-      }
-    
-      /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
-      @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-        background: #181B1C;
-      }
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .mint-img{
+      padding: 10px;
+      width: 300px;
       border-radius: 10px;
-      padding: 26px 0;
-
-      .card-title {
-        font-family: Montserrat Medium;
-        font-weight: 500;
-        font-size: 20px;
-        color: rgba(255, 255, 255, 0.6);
-      }
-
-      .dapp-topbar-btns-wrap{
-        display: flex;
-        align-items: center;
-      }
-  
-      .card-value {
-        font-family: Montserrat Bold;
-        font-weight: bold;
-        font-size: 24px;
-        font-weight: bold;
+      background-color: #00000099;
+      padding: 10px;
+      z-index: 6;
+      position: relative;
+    }
+    .mint-sold{
+      position: relative;
+      margin-top: 10px;
+      p{
+        font-family: Montserrat SemiBold;
+        font-weight: 600;
+        font-size: 18px;
         color: #FFFFFF;
       }
     }
-  }
-}
-
-#hades {
-  position: absolute;
-  display: flex;
-  z-index: 5 !important;
-  justify-content: center;
-  align-items: center;
-  
-
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    background-color: #55555555;
-  }
-
-  /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
-  @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    background: rgba(0, 0, 0, 0.8);
-  }
-  
-  .ohm-popover {
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(100px);
-
-    padding: 20px;
-    border-radius: 10px;
-
-    h3 {
-      align-self: center;
-      justify-self: center;
-      width: 75%;
-      text-align: center;
-    }
-    label {
-      margin: 20px 10px 4px 10px;
-    }
-    .help-text {
-      margin: 10px;
-    }
-  }
-  .mobile .ohm-popover {
-    max-width: 400px;
-  }
-
-  .hades-title{
-    font-family: Montserrat SemiBold;
-    font-weight: 600;
-    font-size: 32px;
-    color: #FFFFFF;
-    text-align: center;
-  }
-
-  .cross-wrap{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .card-content{
-    margin: 0 30px;
-    width: auto;
-
-    .input-lable{
-      font-family: Montserrat Medium;
-      font-weight: 500;
-      font-size: 16px;
-      color: #FFFFFF;
-    }
-
-    .percent{
-      font-family: Montserrat SemiBold;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 18px;
-      color: #FFFFFF;
-    }
-
-    .help-text{
-      margin: 5px 0;
-
-      .text-bond-desc{
-        font-family: Montserrat Light;
-        font-weight: 300;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
+    .mint-slider{
+      margin-top: 40px;
+      width: 300px;
+      .mint-number{
+        position: relative;
+        text-align: center;
+        padding: 5px;
+        .mint-number-div{
+          background-color: #232633;
+          cursor: pointer;
+          &:hover{
+            background-color: #1b1f30;
+          }
+          &:active{
+            background-color: #323337;
+          }
+          border-radius: 10px;
+          padding: 15px;
+          p{
+            font-family: Montserrat SemiBold;
+            font-weight: 600;
+            font-size: 18px;
+            color: #FFFFFF;
+          }
+        }
       }
-    }    
-  }
-
-  .bond-input{
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    outline: none;
-    margin-bottom: 20px;
-  
-    .MuiOutlinedInput-input{
-      font-family: Montserrat Medium;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.6);
     }
-  
-    .MuiOutlinedInput-notchedOutline{
-      border-color: rgba(255, 255, 255, 0.2) !important;
+    .mint-btn{
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 190px;
+      margin-top: 30px;
+      padding: 15px 30px;
+      background: rgba(12, 218, 34, 0.8);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 30px;
+      &:hover{
+        background-color: rgba(12, 218, 63);
+      }
+      &:active{
+        background-color: rgba(0, 94, 22, 0.8);
+      }
+      p{
+        font-family: Montserrat SemiBold;
+        font-weight: 600;
+        font-size: 18px;
+        color: #FFFFFF;
+      }
+    }
+    .mint-wallet{
+      position: relative;
+      margin-top: 30px;
     }
   }
 }

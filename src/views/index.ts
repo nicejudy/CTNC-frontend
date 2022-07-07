@@ -1,5 +1,6 @@
 export { default as Dashboard } from "./Dashboard";
 export { default as Mint } from "./Mint";
+export { default as MyNfts } from "./MyNfts";
 export { default as Gallery } from "./Gallery";
 export { default as Find } from "./Find";
 export { default as Swap } from "./Swap";
