@@ -9,6 +9,7 @@ import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit"
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { Networks, USDC_DECIMALS, META_JSONS, IPFS_URL } from "../../constants";
 import { RootState } from "../store";
+import { multicall } from "../../helpers";
 
 interface IGetBalances {
     address: string;
@@ -77,19 +78,49 @@ let initialState = {
 };
 
 export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails", async ({ networkID, provider, address, loading }: ILoadAccountDetails) => {
-    // initialState.loading = loading;
     const addresses = getAddresses(networkID);
 
-    const usdtContact = new ethers.Contract(addresses.USDT_ADDRESS, CmlContract, provider);
-    const cmlContact = new ethers.Contract(addresses.CML_ADDRESS, CmlContract, provider);
     const nftManagerContract = new ethers.Contract(addresses.NFT_MANAGER, NftManagerContract, provider);
 
-    const ethBalance = ethers.utils.formatEther(await provider.getSigner().getBalance());
-    const usdtBalance = await usdtContact.balanceOf(address) / 10**USDC_DECIMALS;
-    const cmlBalance = ethers.utils.formatUnits(await cmlContact.balanceOf(address), "ether");
+    const calls_token = [
+        {
+            address: addresses.USDT_ADDRESS,
+            name: 'balanceOf',
+            params: [address]
+        },
+        {
+            address: addresses.CML_ADDRESS,
+            name: 'balanceOf',
+            params: [address]
+        }
+    ]
 
-    const ownedNfts = await nftManagerContract.getOwnedNFTIdsOf(address);
-    const supportedNfts = await nftManagerContract.getAvailableNFTIdsOf(address);
+    const [[usdtBalance], [cmlBalance]] = await multicall(CmlContract, calls_token);
+
+    const ethBalance = ethers.utils.formatEther(await provider.getSigner().getBalance());
+
+
+    const calls_nft1 = [
+        {
+            address: addresses.NFT_MANAGER,
+            name: 'getOwnedNFTIdsOf',
+            params: [address]
+        },
+        {
+            address: addresses.NFT_MANAGER,
+            name: 'getAvailableNFTIdsOf',
+            params: [address]
+        },
+        {
+            address: addresses.NFT_MANAGER,
+            name: 'rewardPerDay'
+        }
+    ]
+
+    const [[ownedNfts], [supportedNfts], [rewardPerDay]] = await multicall(NftManagerContract, calls_nft1);
+
+    // const ownedNfts = await nftManagerContract.getOwnedNFTIdsOf(address);
+    // const supportedNfts = await nftManagerContract.getAvailableNFTIdsOf(address);
 
     let addedNfts = ownedNfts.concat(supportedNfts);
     let duplicate = [];
@@ -113,71 +144,70 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
     let totalLockedAmount = 0;
     let totalSupportValue = 0;
     let totalClaimed = 0;
+    let isOwner = [];
+
+    let calls_nft2 = [];
 
     for (let i = 0; i < nftCount; i++) {
-        const users = await nftManagerContract.getUsersOf(nftData[i][0]);
-        const userCount = users.length;
+        calls_nft2.push({
+            address: addresses.NFT_MANAGER,
+            name: 'getUsersOf',
+            params: [nftData[i][0]]
+        });
+    }
+    for (let i = 0; i < nftCount; i++) {
+        calls_nft2.push({
+            address: addresses.NFT_MANAGER,
+            name: 'ownerOf',
+            params: [nftData[i][0]]
+        });
+    }
+    for (let i = 0; i < nftCount; i++) {
+        calls_nft2.push({
+            address: addresses.NFT_MANAGER,
+            name: 'userInfo',
+            params: [nftData[i][0], address]
+        });
+    }
+    for (let i = 0; i < nftCount; i++) {
+        calls_nft2.push({
+            address: addresses.NFT_MANAGER,
+            name: 'isOwnerOfNFT',
+            params: [address, nftData[i][0]]
+        });
+    }
 
-        let supporters = [];
+    const users = await multicall(NftManagerContract, calls_nft2) as Array<any>;
 
-        for (let j = 0; j < userCount; j++) {
-            const userData = await nftManagerContract.userInfo(nftData[i][0], users[j]);
-            const supporter: IUserInfoDetails = {
-                address: users[j],
-                nftId: Number(nftData[i][0]),
-                lastProcessingTimestamp: Number(userData[0]),
-                amount: Number(userData[1]),
-                totalClaimed: Number(userData[2]),
-                rewardPerDay: Number(await nftManagerContract.calculateRewardsPerDay(userData[1])),
-            };
-
-            supporters[j] = supporter;
-        }
-
-        const metaUrl = `${IPFS_URL}${META_JSONS}/${Number(nftData[i][0])}`;
-
-        const res = await axios(metaUrl);
-        const attributes = res.data.attributes;
-
-        const nft: INftInfoDetails = {
-            id: Number(nftData[i][0]),
-            owner: await nftManagerContract.ownerOf(nftData[i][0]),
-            lastProcessingTimestamp: Number(nftData[i][1][1]),
-            amount: Number(nftData[i][1][2]) / Math.pow(10, 18),
-            supportValue: Number(nftData[i][1][3]) / Math.pow(10, 18),
-            supporters: supporters,
-            totalClaimed: Number(nftData[i][1][4]) / Math.pow(10, 18),
-            exists: Boolean(nftData[i][1][5]),
-            rewardPerDay: Number(nftData[i][2]) / Math.pow(10, 18),
-            attributes: attributes
-        };
-
-        nftInfoData[i] = nft;
-
-        const myInfo = await nftManagerContract.userInfo(nftData[i][0], address);
+    for (let i = 0; i < nftCount; i++) {
+        const myInfo = users[2*nftCount + i];
 
         totalClaimed += Number(myInfo[2]) / Math.pow(10, 18);
         totalLockedAmount += Number(myInfo[1]) / Math.pow(10, 18);
 
-        if (await nftManagerContract.isOwnerOfNFT(address, nftData[i][0])) {
+        if (users[3*nftCount + i][0]) {
             totalSupportValue += Number(nftData[i][1][3]) / Math.pow(10, 18);
         }
+
+        isOwner.push(users[3*nftCount + i][0]);
     }
 
-    const totalAmountForRewards = totalClaimed + totalLockedAmount;
+    const totalAmountForRewards = totalSupportValue + totalLockedAmount;
 
-    const totalRewardsPerDay = Number(await nftManagerContract.calculateRewardsPerDay(ethers.utils.parseUnits(totalAmountForRewards.toString(), "ether"))) / Math.pow(10, 18);
+    const totalRewardsPerDay = totalAmountForRewards * 86400 * Number(rewardPerDay) / 1e11;
 
     return {
         loading,
         balances: {
             eth: ethBalance,
-            usdt: usdtBalance,
-            cml: cmlBalance,
+            usdt: usdtBalance / 10**USDC_DECIMALS,
+            cml: ethers.utils.formatUnits(cmlBalance, "ether"),
         },
         ownedNumber: ownedNfts.length,
         availableNumber: addedNfts.length - ownedNfts.length,
-        nft: nftInfoData,
+        ownedNfts: ownedNfts,
+        nft: addedNfts,
+        isOwner: isOwner,
         totalLockedAmount: totalLockedAmount,
         totalSupportValue: totalSupportValue,
         totalClaimed: totalClaimed,
@@ -194,7 +224,9 @@ export interface IAccountSlice {
     };
     ownedNumber: number;
     availableNumber: number;
-    nft: INftInfoDetails[];
+    ownedNfts: number[];
+    nft: number[];
+    isOwner: boolean[];
     totalLockedAmount: number;
     totalSupportValue: number;
     totalClaimed: number;

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IReduxState } from "src/store/slices/state.interface";
 import { cashoutReward, compoundReward, transferNft, upgradeNft } from "src/store/slices/nft-thunk";
 import { IPendingTxn, isPendingTxn, txnButtonText } from "src/store/slices/pending-txns-slice";
+import { loadIdDetails } from "src/store/slices/search-slice";
 import { INftInfoDetails } from "src/store/slices/account-slice";
 import { useWeb3Context } from "src/hooks";
 import { warning } from "src/store/slices/messages-slice";
@@ -28,15 +29,17 @@ import OpenseaIcon from "src/assets/icons/opensea.png";
 interface ITigerProps {
     open: boolean;
     handleClose: () => void;
-    nft: INftInfoDetails;
+    nftId: string;
 }
 
-function TigerModal({ open, handleClose, nft }: ITigerProps) {
+function TigerModal({ open, handleClose, nftId }: ITigerProps) {
     const { provider, address, chainID, providerChainID, checkWrongNetwork } = useWeb3Context();
     const dispatch = useDispatch();
 
-    const nftId = nft.id.toString();
-    const nftLastTimeStamp = nft.lastProcessingTimestamp;
+    const [nfts, setNfts] = useState<INftInfoDetails[]>([]);
+
+    // const nftId = nftId.toString();
+    const nftLastTimeStamp = nfts.length == 0 ? 0 : nfts[0].lastProcessingTimestamp;
 
     // const imageUrl = `https://ipfs.io/ipfs/${META_IMAGES}/${nft.id}.png`;
     const imageUrl = `${IPFS_URL}${META_IMAGES}`;
@@ -62,7 +65,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
     const [name, setName] = useState<string>("");
 
     const getMyInfo = () => {
-        return nft.supporters.find(user => user.address == address);
+        return nfts.length == 0 ? undefined : nfts[0].supporters.find(user => user.address == address);
     }
 
     const getMyAmount = () => {
@@ -95,6 +98,22 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
         return () => clearInterval(timer);
     });
 
+    const LoadIdDetails = async () => {
+        const data = await loadIdDetails({ networkID: chainID, id: nftId });
+        setNfts(data.nfts)
+    }
+
+    if (nftId != "") {
+        LoadIdDetails();
+    }
+
+    // useEffect(() => {
+    //     let timer1 = setInterval(() => {
+    //         LoadIdDetails();
+    //     }, 5000);
+    //     return () => clearInterval(timer1);
+    // });
+
     const onTransfer = async () => {
         if (await checkWrongNetwork()) return;
         dispatch(transferNft({ tokenId: nftId, to: name, provider, address, networkID: chainID, handleClose: () => {} }));
@@ -120,7 +139,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
     };
 
     const Clipboard = () => {
-        navigator.clipboard.writeText(`${INVITE_LINK}${nft.id}`);
+        navigator.clipboard.writeText(`${INVITE_LINK}${nftId}`);
     }
 
     return (
@@ -137,7 +156,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                     </div>
                     <Grid className="tm-wrapper" container spacing={4}>
                         <Grid className="tm-summary" item lg={6} md={6} sm={12} xs={12}>
-                            {nft.owner == address && <div className="owner-badge"><img width="70" src={OwnerBadge} /></div>}
+                            {nfts.length != 0 && nfts[0].owner == address && <div className="owner-badge"><img width="70" src={OwnerBadge} /></div>}
                             <div className="tm-image-section">
                                 <img src={imageUrl} width="90%" />
                             </div>
@@ -147,7 +166,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                                         <p>Properties</p>
                                     </div>
                                     <Grid className="tm-properties-container" container spacing={3}>
-                                        {nft.attributes.map(attr => (
+                                        {nfts.length != 0 && nfts[0].attributes.map(attr => (
                                             <Grid item lg={6} md={6} sm={6} xs={6}>
                                                 <div className="tm-properties-item">
                                                     <p className="tm-properties-type">{attr.trait_type}</p>
@@ -165,7 +184,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                                 <div className="tm-referral">
                                     <OutlinedInput
                                         className="referral-link"
-                                        value={`${INVITE_LINK}${nft.id}`}
+                                        value={`${INVITE_LINK}${nftId}`}
                                         endAdornment={
                                             <InputAdornment position="end">
                                                 <div className="referral-link-btn" onClick={Clipboard}>
@@ -184,65 +203,65 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                             <div className="tm-details">
                                 <div className="tm-details-section-1">
                                     <div className="tm-details-item tm-space">
-                                        <p className="tm-details-title">CTNC #{nft.id}</p>
-                                        <Link href={`${OPENSEA_ITEM_URL}${ETH_ADDRESSES.NFT_MANAGER}/${nft.id.toString()}`} target="_blank">
+                                        <p className="tm-details-title">CTNC #{nftId}</p>
+                                        <Link href={`${OPENSEA_ITEM_URL}${ETH_ADDRESSES.NFT_MANAGER}/${nftId.toString()}`} target="_blank">
                                             <img src={OpenseaIcon} width="40px" />
                                         </Link>
                                     </div>
                                     <div className="tm-details-item">
                                         <p className="tm-details-type">Owned by&nbsp;</p>
-                                        <Link href={`${ETHSCAN_URL}${nft.owner}`} target="_blank">
+                                        {nfts.length != 0 && <Link href={`${ETHSCAN_URL}${nfts[0].owner}`} target="_blank">
                                             <div className="tm-details-value">
-                                                <p className="tm-details-value-cml">{nft.owner == address ? "YOU" : shorten(nft.owner)}</p>
+                                                <p className="tm-details-value-cml">{nfts[0].owner == address ? "YOU" : shorten(nfts[0].owner)}</p>
                                             </div>
-                                        </Link>
+                                        </Link>}
                                     </div>
                                     <div className="tm-details-item">
                                         <p className="tm-details-type">Total Staked Value:&nbsp;</p>
                                         <div className="tm-details-value">
-                                            <p className="tm-details-value-cml">{new Intl.NumberFormat("en-US").format(Math.floor(nft.amount))} $CML</p>
-                                            <p className="tm-details-value-usd">( ${new Intl.NumberFormat("en-US").format(Math.floor(nft.amount * cmlPrice))} )</p>
+                                            <p className="tm-details-value-cml">{nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].amount))} $CML</p>
+                                            <p className="tm-details-value-usd">( ${nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].amount * cmlPrice))} )</p>
                                         </div>
                                     </div>
                                     <div className="tm-details-item">
                                         <p className="tm-details-type">Total Stakers:&nbsp;</p>
                                         <div className="tm-details-value">
-                                            <p className="tm-details-value-cml">{new Intl.NumberFormat("en-US").format(Math.floor(nft.supporters.length))}</p>
+                                            <p className="tm-details-value-cml">{nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].supporters.length))}</p>
                                         </div>
                                     </div>
                                     <div className="tm-details-item">
                                         <p className="tm-details-type">Gift Value:&nbsp;</p>
                                         <div className="tm-details-value">
-                                            <p className="tm-details-value-cml">{new Intl.NumberFormat("en-US").format(Math.floor(nft.supportValue))} $CML</p>
-                                            <p className="tm-details-value-usd">( ${new Intl.NumberFormat("en-US").format(Math.floor(nft.supportValue * cmlPrice))} )</p>
+                                            <p className="tm-details-value-cml">{nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].supportValue))} $CML</p>
+                                            <p className="tm-details-value-usd">( ${nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].supportValue * cmlPrice))} )</p>
                                         </div>
                                     </div>
                                     <div className="tm-details-item tm-details-divider">
                                         <p className="tm-details-type">Total Reward Per Day:&nbsp;</p>
                                         <div className="tm-details-value">
-                                            <p className="tm-details-value-cml">{new Intl.NumberFormat("en-US").format(Math.floor(nft.rewardPerDay))} $CML</p>
-                                            <p className="tm-details-value-usd">( ${new Intl.NumberFormat("en-US").format(Math.floor(nft.rewardPerDay * cmlPrice))} )</p>
+                                            <p className="tm-details-value-cml">{nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].rewardPerDay))} $CML</p>
+                                            <p className="tm-details-value-usd">( ${nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(nfts[0].rewardPerDay * cmlPrice))} )</p>
                                         </div>
                                     </div>
                                     <div className="tm-details-item">
                                         <p className="tm-details-type">Your Staked Value:&nbsp;</p>
                                         <div className="tm-details-value">
-                                            <p className="tm-details-value-cml">{new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount()))} $CML</p>
-                                            <p className="tm-details-value-usd">( ${new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount() * cmlPrice))} )</p>
+                                            <p className="tm-details-value-cml">{nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount()))} $CML</p>
+                                            <p className="tm-details-value-usd">( ${nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount() * cmlPrice))} )</p>
                                         </div>
                                     </div>
                                     <div className="tm-details-item">
                                         <p className="tm-details-type">Your Pending Reward:&nbsp;</p>
                                         <div className="tm-details-value">
-                                            <p className="tm-details-value-cml">{new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount() * getPassedTime() * 34724 / 1e11))} $CML</p>
-                                            <p className="tm-details-value-usd">( ${new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount() * getPassedTime() * 34724 / 1e11 * cmlPrice))} )</p>
+                                            <p className="tm-details-value-cml">{nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount() * getPassedTime() * 34724 / 1e11))} $CML</p>
+                                            <p className="tm-details-value-usd">( ${nfts.length != 0 && new Intl.NumberFormat("en-US").format(Math.floor(getMyAmount() * getPassedTime() * 34724 / 1e11 * cmlPrice))} )</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="tm-interact">
                                 <div className="tm-interact-item">
-                                    {address == nft.owner ? <OutlinedInput
+                                    {nfts.length != 0 && address == nfts[0].owner ? <OutlinedInput
                                         type="text"
                                         placeholder="Input Address or ENS name"
                                         className="tm-interact-input-section"
@@ -255,7 +274,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                                     }
                                     <div className="tm-interact-item-wrapper">
                                         <p className="tm-interact-type">Transfer Your NFT</p>
-                                        {address == nft.owner ? 
+                                        {nfts.length != 0 && address == nfts[0].owner ? 
                                         pendingTransactions.length > 0 ? 
                                         <div className="tm-interact-action">
                                             <p>Transfer</p>
@@ -311,8 +330,8 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                                         <div className="tm-interact-item-1">
                                             <p className="tm-interact-type">Claim NFT Gift</p>
                                             <div className="tm-interact-wrapper">
-                                                {address == nft.owner ? 
-                                                nft.supportValue > 0 ?
+                                                {nfts.length != 0 && address == nfts[0].owner ? 
+                                                nfts.length != 0 && nfts[0].supportValue > 0 ?
                                                 giftTimeLeft <= 0 ?
                                                 pendingTransactions.length > 0 ? 
                                                     <>
@@ -417,7 +436,7 @@ function TigerModal({ open, handleClose, nft }: ITigerProps) {
                             </div>
                             <div className="tm-socials">
                                 <div className="tm-socials-wrapper">
-                                    <Link className="card-opensea-link" href={`${OPENSEA_ITEM_URL}${ETH_ADDRESSES.NFT_MANAGER}/${nft.id.toString()}`} target="_blank">
+                                    <Link className="card-opensea-link" href={`${OPENSEA_ITEM_URL}${ETH_ADDRESSES.NFT_MANAGER}/${nftId.toString()}`} target="_blank">
                                         <p>See on OpenSea</p>
                                     </Link>
                                 </div>

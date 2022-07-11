@@ -57,6 +57,32 @@
       .MuiGrid-spacing-xs-4 {
         margin: 0 !important;
       }
+      .loadmore{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        .loadmore-btn{
+          padding: 20px;
+          background: rgba(12, 218, 34, 0.8);;
+          border-radius: 10px;
+          cursor: pointer;
+          p{
+            font-family: Montserrat Medium;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            color: rgb(255, 255, 255);
+          }
+          &:hover{
+            background-color: rgba(12, 218, 63);
+          }
+          &:active{
+              background-color: rgba(0, 94, 22, 0.8);
+          }
+          margin-top: 50px;
+          margin-bottom: 100px;
+        }
+      }
     }
   }
 }

@@ -14,7 +14,7 @@ import { INftInfoDetails } from "src/store/slices/account-slice";
 import { useWeb3Context } from "src/hooks";
 import { warning } from "src/store/slices/messages-slice";
 import { messages } from "src/constants/messages";
-import { META_IMAGES, DEFAULD_NETWORK } from "src/constants";
+import { DEFAULD_NETWORK } from "src/constants";
 import { utils } from "ethers";
 import { String } from "lodash";
 

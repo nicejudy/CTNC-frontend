@@ -1,6 +1,4 @@
-import { BigNumber, ethers } from "ethers";
-import axios from "axios";
-import { create as ipfsHttpClient } from "ipfs-http-client";
+import { ethers } from "ethers";
 import { getAddresses } from "../../constants";
 import { NftManagerContract } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns } from "./pending-txns-slice";
@@ -11,10 +9,9 @@ import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers
 import { Networks } from "../../constants/blockchain";
 import { warning, success, info, error } from "./messages-slice";
 import { messages } from "../../constants/messages";
-// import { META_IMAGES, META_DESCRIPTION, META_TYPES, META_DONUT } from "../../constants/data";
 import { getGasPrice } from "../../helpers/get-gas-price";
 import { metamaskErrorWrap } from "../../helpers/metamask-error-wrap";
-import { sleep, getNFTLevel } from "../../helpers";
+import { sleep } from "../../helpers";
 
 interface ICreateNft {
     number: number;

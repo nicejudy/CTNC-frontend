@@ -88,7 +88,7 @@ function App() {
         let timer = setInterval(() => {
             loadDetails("app", false);
             loadDetails("account", false);
-        }, 10000);
+        }, 15000);
         return () => clearInterval(timer);
     });
 

@@ -1,4 +1,4 @@
-import { Networks } from "../constants/blockchain";
+import { Networks, RPC_URL } from "../constants/blockchain";
 
 const switchRequest = () => {
     return window.ethereum.request({
@@ -14,7 +14,7 @@ const addChainRequest = () => {
             {
                 chainId: "0x4",
                 chainName: "Rinkeby Network",
-                rpcUrls: ["https://rinkeby.infura.io/v3/"],
+                rpcUrls: [RPC_URL],
                 blockExplorerUrls: ["https://rinkeby.etherscan.io/7f330304c1cd42d79093cc28ae461799"],
                 nativeCurrency: {
                     name: "ETH",

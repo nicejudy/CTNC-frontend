@@ -6,7 +6,7 @@ export const META_JSONS = "QmeR1PniFNR2b5yxp5FAfMvXhnacPrSAJwXnTmdmVX4bVH";
 
 export const ETHSCAN_URL = "https://rinkeby.etherscan.io/address/";
 
-export const IPFS_URL = "https://ipfs.io/ipfs/";
+export const IPFS_URL = "https://ctnc.mypinata.cloud/ipfs/";
 
 export const OPENSEA_ITEM_URL = "https://testnets.opensea.io/assets/rinkeby/";
 

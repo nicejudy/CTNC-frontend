@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useQueryParam, StringParam } from "use-query-params";
 import { Grid, Zoom, TextField, OutlinedInput } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "./find.scss";
@@ -12,8 +13,7 @@ import ApeCard from "src/components/ApeCard";
 import TigerModal from "src/components/TigerModal";
 import Gallery from "../Gallery";
 import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
-import { getMainnetURI } from "src/hooks/web3/helpers/get-mainnet-uri";
-import { DEFAULD_NETWORK } from "src/constants";
+import { DEFAULD_NETWORK, RPC_URL } from "src/constants";
 
 function Find() {
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
@@ -21,25 +21,31 @@ function Find() {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const provider = new StaticJsonRpcProvider(getMainnetURI());
+    const provider = new StaticJsonRpcProvider(RPC_URL);
     const chainID = DEFAULD_NETWORK;
+
+    const [id, setId] = useQueryParam("id", StringParam);
 
     const cookies = new Cookies();
 
-    const id = cookies.get("id");
-    cookies.remove("id");
+    if (id) {
+        cookies.set("id", id);
+    }
+
+    // const id = cookies.get("id");
+    // cookies.remove("id");
 
     const [nfts, setNfts] = useState<INftInfoDetails[]>([]);
 
-    const searchID = async (name: string[]) => {
-        setLoading(true);
-        const data = await loadIdDetails({ networkID: chainID, provider, id: name });
-        setNfts(data.nfts);
-        setLoading(false);
-    };
+    // const searchID = async (name: string[]) => {
+    //     setLoading(true);
+    //     const data = await loadIdDetails({ networkID: chainID, id: name });
+    //     setNfts(data.nfts);
+    //     setLoading(false);
+    // };
 
-    if (id != "") {
-        if (parseInt(id) > 0 && parseInt(id) <= app.nftMintedSupply * 1) searchID([id]);
+    const isId = () => {
+        return cookies.get("id") != "" && parseInt(cookies.get("id")) > 0 && parseInt(cookies.get("id")) <= app.nftMintedSupply * 1;
     }
 
     const [open, setOpen] = useState(true);
@@ -62,7 +68,7 @@ function Find() {
                     </div>
                 </div>
             </div>
-            {nfts.length > 0 && <TigerModal open={open} handleClose={handleClose} nft={nfts[0]} />}
+            {isId() && <TigerModal open={open} handleClose={handleClose} nftId={cookies.get("id")} />}
         </>
     );
 }

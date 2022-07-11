@@ -7,3 +7,4 @@ export * from "./set-all";
 export * from "./token-price";
 export * from "./sleep";
 export * from "./get-nft-level";
+export * from "./multicall";

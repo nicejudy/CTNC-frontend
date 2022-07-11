@@ -6,28 +6,42 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { trim } from "src/helpers";
 import { useQueryParam, StringParam } from "use-query-params";
 import "./gallery.scss";
-import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "src/store/slices/state.interface";
 import { IAppSlice } from "src/store/slices/app-slice";
-import { INftInfoDetails } from "src/store/slices/account-slice";
-import { loadAccountDetails, loadIdDetails } from "src/store/slices/search-slice";
+import { loadAccountDetails } from "src/store/slices/search-slice";
 import ApeCard from "src/components/ApeCard";
-import { isUint8ClampedArray } from "util/types";
-import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
-import { getMainnetURI } from "src/hooks/web3/helpers/get-mainnet-uri";
-import { DEFAULD_NETWORK } from "src/constants";
+import TigerModal from "src/components/TigerModal";
+import { StaticJsonRpcProvider } from "@ethersproject/providers";
+import { DEFAULD_NETWORK, RPC_URL } from "src/constants";
 
 function Gallery() {
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
     const app = useSelector<IReduxState, IAppSlice>(state => state.app);
 
-    const provider = new StaticJsonRpcProvider(getMainnetURI());
+    const provider = new StaticJsonRpcProvider(RPC_URL);
     const chainID = DEFAULD_NETWORK;
+
+    let nftsall : string[] = [];
+    for (let i = 1; i <= 30; i++){
+        if (i > app.nftMintedSupply) break;
+        nftsall.push(i.toString());
+    }
 
     const [name, setName] = useState<string[]>([]);
     const [query, setQuery] = useState<string>("");
 
-    const [nfts, setNfts] = useState<INftInfoDetails[]>([]);
+    const [nfts, setNfts] = useState<string[]>(nftsall);
+
+    const LoadMore = () => {
+        let moreNfts = nfts;
+        const count = nfts.length;
+        for (let i = 1; i <= 30; i++){
+            if (i + count > app.nftMintedSupply) break;
+            const item = i + count;
+            moreNfts.push(item.toString());
+        }
+        setNfts(moreNfts);
+    }
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -36,8 +50,13 @@ function Gallery() {
             if (ethers.utils.isAddress(name[0])) searchAddress(name[0]);
             else if (parseInt(name[0]) > 0 && parseInt(name[0]) <= app.nftMintedSupply * 1) searchID(name);
             else if (isNameArray(name[0])) return;
-            else setNfts([]);
-            setQuery(name[0]);
+            else {
+                setNfts(nftsall);
+                setQuery("");
+                setName([]);
+                return;
+            }
+            setQuery("query");
             setName([]);
         }
     };
@@ -56,8 +75,8 @@ function Gallery() {
                 return;
             }
         }
-        const data = await loadIdDetails({ networkID: chainID, provider, id: name });
-        setNfts(data.nfts);
+        // const data = await loadIdDetails({ networkID: chainID, provider, id: name });
+        setNfts(name);
         setLoading(false);
     };
 
@@ -73,10 +92,22 @@ function Gallery() {
             if (parseInt(id) <= 0 || parseInt(id) > app.nftMintedSupply * 1) return false;
         }
         searchID(ids);
-        setQuery(name);
+        setQuery("query");
         setName([]);
-        console.log(query)
         return true;
+    };
+
+    const [open, setOpen] = useState(false);
+
+    const [nftId, setNftId] = useState("")
+
+    const handleOpen = (id: string) => {
+        setNftId(id);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     return (
@@ -98,14 +129,20 @@ function Gallery() {
                             <></>
                         ) : (
                             nfts.map(nft => (
-                                <Grid key={nft.id} item xl={3} lg={4} md={6} sm={6} xs={12}>
-                                    <ApeCard nft={nft} compoundDelay={app.compoundDelay * 1} filter="search" />
+                                <Grid key={nft} item xl={3} lg={4} md={6} sm={6} xs={12}>
+                                    <ApeCard nftId={nft} handleOpen={handleOpen} />
                                 </Grid>
                             ))
                         )}
                     </Grid>}
+                    <div className="loadmore">
+                        {nfts.length < app.nftMintedSupply && query == "" && <div className="loadmore-btn" onClick={LoadMore}>
+                            <p>Load More</p>
+                        </div>}
+                    </div>
                 </div>
             </div>
+            <TigerModal open={open} handleClose={handleClose} nftId={nftId} />
         </div>
     );
 }
