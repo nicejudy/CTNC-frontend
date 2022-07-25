@@ -1,8 +1,8 @@
 {
-  "short_name": "CTNC",
+  "short_name": "CTNC DEMO APP",
   "start_url": ".",
   "homepage": "./",
-  "name": "Crypto Tiger Node Club",
+  "name": "CTNC DEMO APP",
   "launch_path": "/public/index.html",
   "icons": [
     {
