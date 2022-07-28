@@ -7,5 +7,5 @@ export enum Networks {
 
 export const DEFAULD_NETWORK = Networks.ETH;
 
-// export const RPC_URL = "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
-export const RPC_URL = "https://rpc.cryptotigernode.club/v1/rinkeby";
+export const RPC_URL = "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
+// export const RPC_URL = "https://rpc.cryptotigernode.club/v1/rinkeby";
